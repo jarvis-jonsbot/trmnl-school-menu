@@ -1,0 +1,35 @@
+name: Update School Menu
+
+on:
+  schedule:
+    # Run at 6 AM and 11 AM PT (14:00 and 19:00 UTC) on weekdays
+    - cron: '0 14 * * 1-5'
+    - cron: '0 19 * * 1-5'
+  workflow_dispatch: # allow manual trigger
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate menu page
+        run: node generate.js
+
+      - name: Commit and push updated page
+        run: |
+          git config user.name "jarvis-jonsbot"
+          git config user.email "jarvis.jonsbot@icloud.com"
+          git add docs/index.html
+          git diff --staged --quiet || git commit -m "Update menu for $(date -u '+%Y-%m-%d')"
+          git push
