@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Fetches today's breakfast & lunch menus from HealthePro and
- * generates a static index.html sized for TRMNL (800x480, e-ink friendly).
+ * Fetches today's (or next school day's) breakfast & lunch menus from HealthePro
+ * and generates a static index.html sized for TRMNL (800x480, e-ink friendly).
  *
  * Run via GitHub Actions daily, output committed to gh-pages branch.
  */
@@ -11,34 +11,40 @@ const fs = require('fs');
 const ORG_ID = 1184;
 const BREAKFAST_MENU_ID = 103752;
 const LUNCH_MENU_ID = 103751;
+const TZ = 'America/Los_Angeles';
 
-async function fetchTodayMenu(menuId) {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const dateStr = today.toLocaleDateString('en-CA'); // YYYY-MM-DD in local time
+/** Get YYYY-MM-DD string in Pacific time */
+function pacificDateStr(date) {
+  return date.toLocaleDateString('en-CA', { timeZone: TZ });
+}
 
-  const [metaRes, datesRes] = await Promise.all([
-    fetch(`https://menus.healthepro.com/api/organizations/${ORG_ID}/menus/${menuId}`),
-    fetch(`https://menus.healthepro.com/api/organizations/${ORG_ID}/menus/${menuId}/year/${year}/month/${month}/date_overwrites`),
-  ]);
+/** Get year/month in Pacific time */
+function pacificYearMonth(date) {
+  const dateStr = pacificDateStr(date); // YYYY-MM-DD
+  const [year, month] = dateStr.split('-').map(Number);
+  return { year, month };
+}
 
-  const meta = await metaRes.json();
-  const dates = await datesRes.json();
+/**
+ * Fetch all menu entries for a given year/month.
+ */
+async function fetchMonthEntries(menuId, year, month) {
+  const res = await fetch(
+    `https://menus.healthepro.com/api/organizations/${ORG_ID}/menus/${menuId}/year/${year}/month/${month}/date_overwrites`
+  );
+  const data = await res.json();
+  return data.data || [];
+}
 
-  const todayEntry = (dates.data || []).find(d => d.day === dateStr);
-  if (!todayEntry) return { menuName: meta.data?.public_name || 'Menu', categories: [], noSchool: false, noEntry: true };
-
+/**
+ * Parse a menu entry's setting into { categories, noSchool, noSchoolReason }.
+ */
+function parseSetting(entry) {
   let setting;
-  try { setting = JSON.parse(todayEntry.setting); } catch { return null; }
+  try { setting = JSON.parse(entry.setting); } catch { return null; }
 
   if (setting.days_off?.status) {
-    return {
-      menuName: meta.data?.public_name || 'Menu',
-      categories: [],
-      noSchool: true,
-      noSchoolReason: setting.days_off.description || 'No school today',
-    };
+    return { categories: [], noSchool: true, noSchoolReason: setting.days_off.description || 'No school today' };
   }
 
   const categories = [];
@@ -51,12 +57,69 @@ async function fetchTodayMenu(menuId) {
       currentCat.items.push(item.name);
     }
   }
+  return { categories, noSchool: false };
+}
 
-  return { menuName: meta.data?.public_name || 'Menu', categories, noSchool: false };
+/**
+ * Find the target date: today if there's a menu, otherwise the next school day.
+ * Returns { dateStr, isToday, displayDate, entries: { breakfast, lunch } }
+ */
+async function findTargetMenu() {
+  const now = new Date();
+  const todayStr = pacificDateStr(now);
+  const { year, month } = pacificYearMonth(now);
+
+  // Fetch both menus for this month (and next if needed)
+  async function getEntriesForMenus(yr, mo) {
+    const [bEntries, lEntries] = await Promise.all([
+      fetchMonthEntries(BREAKFAST_MENU_ID, yr, mo),
+      fetchMonthEntries(LUNCH_MENU_ID, yr, mo),
+    ]);
+    return { bEntries, lEntries };
+  }
+
+  let { bEntries, lEntries } = await getEntriesForMenus(year, month);
+
+  // Also fetch next month if we might need it (last week of month)
+  const dayOfMonth = parseInt(todayStr.split('-')[2]);
+  let nextMonthData = null;
+  if (dayOfMonth >= 25) {
+    const nextMonth = month === 12 ? 1 : month + 1;
+    const nextYear = month === 12 ? year + 1 : year;
+    nextMonthData = await getEntriesForMenus(nextYear, nextMonth);
+    bEntries = [...bEntries, ...nextMonthData.bEntries];
+    lEntries = [...lEntries, ...nextMonthData.lEntries];
+  }
+
+  // Find all dates that have a real menu (not a day-off, not empty)
+  const menuDates = new Set();
+  for (const e of bEntries) {
+    const parsed = parseSetting(e);
+    if (parsed && !parsed.noSchool && parsed.categories.length > 0) menuDates.add(e.day);
+  }
+  for (const e of lEntries) {
+    const parsed = parseSetting(e);
+    if (parsed && !parsed.noSchool && parsed.categories.length > 0) menuDates.add(e.day);
+  }
+
+  // Find target date: today or next available school day
+  const sortedDates = [...menuDates].sort();
+  const targetDate = sortedDates.find(d => d >= todayStr) || todayStr;
+  const isToday = targetDate === todayStr;
+
+  const bEntry = bEntries.find(e => e.day === targetDate);
+  const lEntry = lEntries.find(e => e.day === targetDate);
+
+  return {
+    dateStr: targetDate,
+    isToday,
+    breakfast: bEntry ? parseSetting(bEntry) : { categories: [], noSchool: false, noEntry: true },
+    lunch: lEntry ? parseSetting(lEntry) : { categories: [], noSchool: false, noEntry: true },
+  };
 }
 
 function renderSection(label, emoji, menu) {
-  if (!menu || menu.noEntry) {
+  if (!menu || menu.noEntry || menu.categories.length === 0) {
     return `
       <section class="menu-section">
         <h2>${emoji} ${label}</h2>
@@ -71,17 +134,7 @@ function renderSection(label, emoji, menu) {
       </section>`;
   }
 
-  // Only show Entree + Vegetables (skip Fruit/Milk/Condiments to save space)
-  const priority = ['Lunch Entree', 'Breakfast Entree', 'Entree', 'Vegetables', 'Grains'];
-  const shown = menu.categories.filter(c =>
-    priority.some(p => c.name.toLowerCase().includes(p.toLowerCase()))
-  );
-  const rest = menu.categories.filter(c =>
-    !priority.some(p => c.name.toLowerCase().includes(p.toLowerCase()))
-  );
-  const allCats = [...shown, ...rest];
-
-  const rows = allCats.map(cat => `
+  const rows = menu.categories.map(cat => `
     <div class="cat-row">
       <span class="cat-name">${cat.name}</span>
       <span class="cat-items">${cat.items.join(' · ')}</span>
@@ -95,26 +148,25 @@ function renderSection(label, emoji, menu) {
 }
 
 async function main() {
-  const [breakfast, lunch] = await Promise.all([
-    fetchTodayMenu(BREAKFAST_MENU_ID),
-    fetchTodayMenu(LUNCH_MENU_ID),
-  ]);
+  const { dateStr, isToday, breakfast, lunch } = await findTargetMenu();
 
-  const today = new Date();
-  const dateLabel = today.toLocaleDateString('en-US', {
-    weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
-    timeZone: 'America/Los_Angeles',
-  });
+  // Format the display date in Pacific time
+  const [yr, mo, dy] = dateStr.split('-').map(Number);
+  const menuDate = new Date(yr, mo - 1, dy, 12, 0, 0); // noon local, avoids DST edge
+  const dayLabel = menuDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  const heading = isToday ? `Today — ${dayLabel}` : `Coming up ${dayLabel}`;
 
   const bSection = renderSection('Breakfast', '🍳', breakfast);
   const lSection = renderSection('Lunch', '🍽️', lunch);
+
+  const updatedAt = new Date().toLocaleTimeString('en-US', { timeZone: TZ, hour: 'numeric', minute: '2-digit' });
 
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=800">
-  <title>Roy Cloud Menu — ${dateLabel}</title>
+  <title>Roy Cloud Menu — ${dayLabel}</title>
   <style>
     /* TRMNL target: 800x480px, e-ink (black & white) */
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -195,18 +247,18 @@ async function main() {
 <body>
   <header>
     <h1>🏫 Roy Cloud School Menu</h1>
-    <span class="date">${dateLabel}</span>
+    <span class="date">${heading}</span>
   </header>
   <div class="menus">
     ${bSection}
     ${lSection}
   </div>
-  <footer>Updated ${new Date().toLocaleTimeString('en-US', { timeZone: 'America/Los_Angeles', hour: 'numeric', minute: '2-digit' })} PT · menus.healthepro.com</footer>
+  <footer>Updated ${updatedAt} PT · menus.healthepro.com</footer>
 </body>
 </html>`;
 
   fs.writeFileSync('docs/index.html', html);
-  console.log(`Generated docs/index.html for ${dateLabel}`);
+  console.log(`Generated docs/index.html — ${heading}`);
 }
 
 main().catch(e => { console.error(e); process.exit(1); });
