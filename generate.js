@@ -60,14 +60,26 @@ function parseSetting(entry) {
   return { categories, noSchool: false };
 }
 
+/** Get Pacific hour (0-23) */
+function pacificHour(date) {
+  return parseInt(date.toLocaleString('en-US', { timeZone: TZ, hour: 'numeric', hour12: false }));
+}
+
 /**
  * Find the target date: today if there's a menu, otherwise the next school day.
- * Returns { dateStr, isToday, displayDate, entries: { breakfast, lunch } }
+ * After 5 PM PT, flips to show tomorrow's menu so families can plan ahead.
+ * Returns { dateStr, isToday, isTomorrow, displayDate, entries: { breakfast, lunch } }
  */
 async function findTargetMenu() {
   const now = new Date();
   const todayStr = pacificDateStr(now);
   const { year, month } = pacificYearMonth(now);
+
+  // After 5 PM PT, show tomorrow's menu instead of today's
+  const tomorrow = new Date(now);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowStr = pacificDateStr(tomorrow);
+  const cutoffStr = pacificHour(now) >= 17 ? tomorrowStr : todayStr;
 
   // Fetch both menus for this month (and next if needed)
   async function getEntriesForMenus(yr, mo) {
@@ -102,10 +114,11 @@ async function findTargetMenu() {
     if (parsed && !parsed.noSchool && parsed.categories.length > 0) menuDates.add(e.day);
   }
 
-  // Find target date: today or next available school day
+  // Find target date: today (or tomorrow after 5 PM) or next available school day
   const sortedDates = [...menuDates].sort();
-  const targetDate = sortedDates.find(d => d >= todayStr) || todayStr;
+  const targetDate = sortedDates.find(d => d >= cutoffStr) || cutoffStr;
   const isToday = targetDate === todayStr;
+  const isTomorrow = targetDate === tomorrowStr;
 
   const bEntry = bEntries.find(e => e.day === targetDate);
   const lEntry = lEntries.find(e => e.day === targetDate);
@@ -113,6 +126,7 @@ async function findTargetMenu() {
   return {
     dateStr: targetDate,
     isToday,
+    isTomorrow,
     breakfast: bEntry ? parseSetting(bEntry) : { categories: [], noSchool: false, noEntry: true },
     lunch: lEntry ? parseSetting(lEntry) : { categories: [], noSchool: false, noEntry: true },
   };
@@ -148,13 +162,13 @@ function renderSection(label, emoji, menu) {
 }
 
 async function main() {
-  const { dateStr, isToday, breakfast, lunch } = await findTargetMenu();
+  const { dateStr, isToday, isTomorrow, breakfast, lunch } = await findTargetMenu();
 
   // Format the display date in Pacific time
   const [yr, mo, dy] = dateStr.split('-').map(Number);
   const menuDate = new Date(yr, mo - 1, dy, 12, 0, 0); // noon local, avoids DST edge
   const dayLabel = menuDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-  const heading = isToday ? `Today — ${dayLabel}` : `Coming up ${dayLabel}`;
+  const heading = isToday ? `Today — ${dayLabel}` : isTomorrow ? `Tomorrow — ${dayLabel}` : `Coming up — ${dayLabel}`;
 
   const bSection = renderSection('Breakfast', '🍳', breakfast);
   const lSection = renderSection('Lunch', '🍽️', lunch);

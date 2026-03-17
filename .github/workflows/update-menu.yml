@@ -2,9 +2,10 @@ name: Update School Menu
 
 on:
   schedule:
-    # Run at 6 AM and 11 AM PT (14:00 and 19:00 UTC) on weekdays
+    # Run at 6 AM, 11 AM, and 5 PM PT (14:00, 19:00, and 01:00 UTC) on weekdays
     - cron: '0 14 * * 1-5'
     - cron: '0 19 * * 1-5'
+    - cron: '0 1 * * 2-6'  # 5 PM PT = 01:00 UTC next day (Tue-Sat covers Mon-Fri evenings)
   workflow_dispatch: # allow manual trigger
 
 permissions:
