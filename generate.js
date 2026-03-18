@@ -75,11 +75,11 @@ async function findTargetMenu() {
   const todayStr = pacificDateStr(now);
   const { year, month } = pacificYearMonth(now);
 
-  // After 5 PM PT, show tomorrow's menu instead of today's
+  // After 1 PM PT, show tomorrow's menu so families can plan ahead before school pickup
   const tomorrow = new Date(now);
   tomorrow.setDate(tomorrow.getDate() + 1);
   const tomorrowStr = pacificDateStr(tomorrow);
-  const cutoffStr = pacificHour(now) >= 17 ? tomorrowStr : todayStr;
+  const cutoffStr = pacificHour(now) >= 13 ? tomorrowStr : todayStr;
 
   // Fetch both menus for this month (and next if needed)
   async function getEntriesForMenus(yr, mo) {
