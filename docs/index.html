@@ -5,139 +5,84 @@
   <meta name="viewport" content="width=800">
   <title>Roy Cloud Menu — Friday, April 24</title>
   <style>
-    /* TRMNL target: 800x480px, e-ink (black & white) */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      width: 800px;
-      height: 480px;
+      width: 800px; height: 480px;
+      background: #fff; color: #000;
+      font-family: Georgia, serif;
       overflow: hidden;
-      font-family: 'Georgia', serif;
-      background: #fff;
-      color: #000;
-      display: flex;
-      flex-direction: column;
-      padding: 16px 20px 12px;
+      display: flex; flex-direction: column;
+      padding: 14px 20px 10px;
     }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      border-bottom: 2px solid #000;
-      padding-bottom: 8px;
-      margin-bottom: 12px;
+    .header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      border-bottom: 3px solid #000;
+      padding-bottom: 8px; margin-bottom: 12px;
     }
-    header h1 { font-size: 22px; font-weight: bold; letter-spacing: 0.5px; }
-    header .date { font-size: 13px; color: #333; }
-    .menus {
-      display: flex;
-      gap: 20px;
-      flex: 1;
-      overflow: hidden;
-    }
-    .menu-section {
-      flex: 1;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 10px 12px;
-      overflow: hidden;
-    }
-    .menu-section h2 {
-      font-size: 15px;
-      font-weight: bold;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 5px;
-      margin-bottom: 8px;
-    }
-    .cat-row {
-      margin-bottom: 6px;
-      font-size: 12px;
-      line-height: 1.4;
-    }
-    .cat-name {
-      display: block;
-      font-weight: bold;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #555;
-    }
-    .cat-items {
-      display: block;
-      font-size: 13px;
-    }
-    .no-menu, .no-school {
-      font-size: 14px;
-      color: #666;
-      font-style: italic;
-      padding-top: 8px;
-    }
-    footer {
-      font-size: 10px;
-      color: #999;
-      text-align: right;
-      padding-top: 6px;
-      border-top: 1px solid #eee;
-      margin-top: 8px;
-    }
+    .school { font-size: 22px; font-weight: bold; letter-spacing: 0.02em; text-transform: uppercase; }
+    .date-label { font-size: 14px; font-style: italic; }
+    .meals { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .meal-block { border-left: 4px solid #000; padding-left: 12px; }
+    .meal-title { font-size: 13px; font-weight: bold; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px; }
+    .cat-rows { display: flex; flex-direction: column; gap: 3px; }
+    .cat-row { display: flex; font-size: 13px; line-height: 1.4; }
+    .cat-name { font-weight: bold; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; min-width: 72px; padding-top: 1px; flex-shrink: 0; }
+    .cat-items { flex: 1; }
+    .divider { border: none; border-top: 1px solid #000; margin: 4px 0; }
+    .no-menu { font-size: 13px; font-style: italic; }
+    footer { font-size: 10px; text-align: right; border-top: 1px solid #000; padding-top: 5px; margin-top: 6px; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>🏫 Roy Cloud School Menu</h1>
-    <span class="date">Tomorrow — Friday, April 24</span>
-  </header>
-  <div class="menus">
-    
-    <section class="menu-section">
-      <h2>🍳 Breakfast</h2>
-      
-    <div class="cat-row">
-      <span class="cat-name">Breakfast Entree</span>
-      <span class="cat-items">Cheerios or Rice Chex Cereal · Breakfast burrito -- made in-house · Plain Bagel · Blueberry Bagel- Bonami · Whole Wheat Bagel w/ Cheese and Jalapeno · Whole Wheat Bagel with cinnamon/sugar (in house)</span>
-    </div>
-    <div class="cat-row">
-      <span class="cat-name">Fruit</span>
-      <span class="cat-items">Fresh Apple · Fresh Orange · Petite Banana · Fresh Fruit · 100% Fruit Juice · Raisins</span>
-    </div>
-    <div class="cat-row">
-      <span class="cat-name">Milk</span>
-      <span class="cat-items">1% Milk · Nonfat Milk</span>
-    </div>
-    <div class="cat-row">
-      <span class="cat-name">Misc.</span>
-      <span class="cat-items">Cream Cheese Cup · String Cheese</span>
-    </div>
-    </section>
-    
-    <section class="menu-section">
-      <h2>🍽️ Lunch</h2>
-      
-    <div class="cat-row">
-      <span class="cat-name">Lunch Entree</span>
-      <span class="cat-items">Cheese Tamale · Baked Mac and Cheese · Chopped Steak Sandwich (scratch)</span>
-    </div>
-    <div class="cat-row">
-      <span class="cat-name">Vegetables</span>
-      <span class="cat-items">Cauliflower w/Miso · Black Beans · Seasoned Potato Wedges · Salsa Roja FS</span>
-    </div>
-    <div class="cat-row">
-      <span class="cat-name">Fruit</span>
-      <span class="cat-items">Fresh Apple · Fresh Orange · Petite Banana · Fresh Fruit · Raisins</span>
-    </div>
-    <div class="cat-row">
-      <span class="cat-name">Grains</span>
-      <span class="cat-items">Whole Grain Artisan Roll</span>
-    </div>
-    <div class="cat-row">
-      <span class="cat-name">Milk</span>
-      <span class="cat-items">1% Milk · Nonfat Milk</span>
-    </div>
-    <div class="cat-row">
-      <span class="cat-name">Condiments</span>
-      <span class="cat-items">Sour cream</span>
-    </div>
-    </section>
+  <div class="header">
+    <span class="school">Roy Cloud School</span>
+    <span class="date-label">Today — Friday, April 24</span>
   </div>
-  <footer>Updated 2:49 PM PT · menus.healthepro.com</footer>
+  <div class="meals">
+    <div class="meal-block"><div class="meal-title">🍳 Breakfast</div><div class="cat-rows">
+      <div class="cat-row">
+        <span class="cat-name">Breakfast Entree</span>
+        <span class="cat-items">Cheerios or Rice Chex Cereal · Breakfast burrito -- made in-house · Plain Bagel · Blueberry Bagel- Bonami · Whole Wheat Bagel w/ Cheese and Jalapeno · Whole Wheat Bagel with cinnamon/sugar (in house)</span>
+      </div>
+      <div class="cat-row">
+        <span class="cat-name">Fruit</span>
+        <span class="cat-items">Fresh Apple · Fresh Orange · Petite Banana · Fresh Fruit · 100% Fruit Juice · Raisins</span>
+      </div>
+      <div class="cat-row">
+        <span class="cat-name">Milk</span>
+        <span class="cat-items">1% Milk · Nonfat Milk</span>
+      </div>
+      <div class="cat-row">
+        <span class="cat-name">Misc.</span>
+        <span class="cat-items">Cream Cheese Cup · String Cheese</span>
+      </div></div></div>
+    <hr class="divider">
+    <div class="meal-block"><div class="meal-title">🍽️ Lunch</div><div class="cat-rows">
+      <div class="cat-row">
+        <span class="cat-name">Lunch Entree</span>
+        <span class="cat-items">Cheese Tamale · Baked Mac and Cheese · Chopped Steak Sandwich (scratch)</span>
+      </div>
+      <div class="cat-row">
+        <span class="cat-name">Vegetables</span>
+        <span class="cat-items">Cauliflower w/Miso · Black Beans · Seasoned Potato Wedges · Salsa Roja FS</span>
+      </div>
+      <div class="cat-row">
+        <span class="cat-name">Fruit</span>
+        <span class="cat-items">Fresh Apple · Fresh Orange · Petite Banana · Fresh Fruit · Raisins</span>
+      </div>
+      <div class="cat-row">
+        <span class="cat-name">Grains</span>
+        <span class="cat-items">Whole Grain Artisan Roll</span>
+      </div>
+      <div class="cat-row">
+        <span class="cat-name">Milk</span>
+        <span class="cat-items">1% Milk · Nonfat Milk</span>
+      </div>
+      <div class="cat-row">
+        <span class="cat-name">Condiments</span>
+        <span class="cat-items">Sour cream</span>
+      </div></div></div>
+  </div>
+  <footer>Updated 7:26 AM PT &bull; menu.ulfhedinn.net</footer>
 </body>
 </html>
