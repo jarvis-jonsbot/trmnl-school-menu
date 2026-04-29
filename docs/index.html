@@ -9,84 +9,46 @@
     body {
       width: 800px; height: 480px;
       background: #fff; color: #000;
-      font-family: 'Courier New', Courier, monospace;
+      font-family: Georgia, serif;
       overflow: hidden;
       display: flex; flex-direction: column;
+      padding: 14px 20px 10px;
     }
-    .top-bar {
-      display: flex; justify-content: space-between; align-items: center;
-      background: #000; color: #fff;
-      padding: 8px 20px;
-      font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: bold;
-    }
-    .content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-    .meal-section { flex: 1; display: flex; flex-direction: column; }
-    .meal-section:first-child { border-bottom: 3px double #000; }
-    .meal-header {
-      background: #000; color: #fff;
-      font-size: 11px; font-weight: bold; letter-spacing: 0.2em; text-transform: uppercase;
-      padding: 3px 20px;
-    }
-    .cat-rows { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; padding: 3px 20px; }
-    .cat-row { display: flex; font-size: 12px; line-height: 1.35; border-bottom: 1px dotted #000; padding: 2px 0; }
-    .cat-row:last-child { border-bottom: none; }
-    .cat-name { min-width: 80px; font-weight: bold; text-transform: uppercase; font-size: 10px; letter-spacing: 0.1em; padding-top: 1px; flex-shrink: 0; }
-    .sep { margin: 0 8px; flex-shrink: 0; }
-    .cat-items { flex: 1; }
-    footer { font-size: 9px; text-align: right; border-top: 2px solid #000; padding: 4px 20px; letter-spacing: 0.05em; text-transform: uppercase; }
+    .header { text-align: center; border-bottom: 3px solid #000; padding-bottom: 8px; margin-bottom: 14px; }
+    .day { font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: bold; }
+    .school { font-size: 18px; font-style: italic; }
+    .cols { display: flex; gap: 0; flex: 1; }
+    .col { flex: 1; display: flex; flex-direction: column; padding: 0 16px; }
+    .col:first-child { border-right: 2px solid #000; padding-left: 0; }
+    .col:last-child { padding-right: 0; }
+    .col-title { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: bold; border-bottom: 1px solid #000; padding-bottom: 5px; margin-bottom: 10px; }
+    .entrees { flex: 1; display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+    .entree-item { font-size: 20px; line-height: 1.25; font-weight: bold; }
+    .also-label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: bold; margin-bottom: 4px; border-top: 1px dashed #000; padding-top: 6px; }
+    .also-items { font-size: 13px; line-height: 1.5; }
+    .no-menu { font-size: 13px; font-style: italic; }
+    footer { font-size: 10px; text-align: right; border-top: 1px solid #000; padding-top: 5px; margin-top: 8px; }
   </style>
 </head>
 <body>
-  <div class="top-bar">
-    <span>Roy Cloud School</span>
-    <span>Today — Wednesday, April 29</span>
+  <div class="header">
+    <div class="day">Today — Wednesday, April 29</div>
+    <div class="school">Roy Cloud School</div>
   </div>
-  <div class="content">
-    <div class="meal-section">
-      <div class="meal-header">/// Breakfast</div>
-      <div class="cat-rows">
-      <div class="cat-row">
-        <span class="cat-name">Breakfast Entree</span><span class="sep">|</span>
-        <span class="cat-items">Cheerios or Rice Chex Cereal / Concha WG- Bonami / Plain Bagel / Blueberry Bagel- Bonami / Whole Wheat Bagel w/ Cheese and Jalapeno / Whole Wheat Bagel with cinnamon/sugar (in house)</span>
+  <div class="cols">
+    
+      <div class="col">
+        <div class="col-title">🍳 Breakfast</div>
+        <div class="entrees"><div class="entree-item">Cheerios or Rice Chex Cereal</div><div class="entree-item">Concha WG- Bonami</div><div class="entree-item">Plain Bagel</div><div class="entree-item">Blueberry Bagel- Bonami</div><div class="entree-item">Whole Wheat Bagel w/ Cheese and Jalapeno</div><div class="entree-item">Whole Wheat Bagel with cinnamon/sugar (in house)</div></div>
+        <div class="also-label">Also available</div><div class="also-items">Fresh Apple · Fresh Orange · Petite Banana · Fresh Fruit · 100% Fruit Juice · Raisins · 1% Milk · Nonfat Milk · String Cheese · Cream Cheese Cup</div>
       </div>
-      <div class="cat-row">
-        <span class="cat-name">Fruit</span><span class="sep">|</span>
-        <span class="cat-items">Fresh Apple / Fresh Orange / Petite Banana / Fresh Fruit / 100% Fruit Juice / Raisins</span>
+    
+      <div class="col">
+        <div class="col-title">🍽️ Lunch</div>
+        <div class="entrees"><div class="entree-item">BBQ Chicken Drumstick</div><div class="entree-item">Bean & Cheese Pupusa--Alicia's</div><div class="entree-item">Chicken Caesar Salad</div></div>
+        <div class="also-label">Also available</div><div class="also-items">Green mixed salad w/ Italian Dressing · Baked Pinto Beans · Fresh Made Curtido Slaw · Salsa Roja FS · Fresh Apple · Fresh Orange · Petite Banana · Fresh Fruit · Raisins · Whole Grain Artisan Roll · 1% Milk · Nonfat Milk</div>
       </div>
-      <div class="cat-row">
-        <span class="cat-name">Milk</span><span class="sep">|</span>
-        <span class="cat-items">1% Milk / Nonfat Milk</span>
-      </div>
-      <div class="cat-row">
-        <span class="cat-name">Misc.</span><span class="sep">|</span>
-        <span class="cat-items">String Cheese / Cream Cheese Cup</span>
-      </div></div>
-    </div>
-    <div class="meal-section">
-      <div class="meal-header">/// Lunch</div>
-      <div class="cat-rows">
-      <div class="cat-row">
-        <span class="cat-name">Lunch Entree</span><span class="sep">|</span>
-        <span class="cat-items">BBQ Chicken Drumstick / Bean & Cheese Pupusa--Alicia's / Chicken Caesar Salad</span>
-      </div>
-      <div class="cat-row">
-        <span class="cat-name">Vegetables</span><span class="sep">|</span>
-        <span class="cat-items">Green mixed salad w/ Italian Dressing / Baked Pinto Beans / Fresh Made Curtido Slaw / Salsa Roja FS</span>
-      </div>
-      <div class="cat-row">
-        <span class="cat-name">Fruit</span><span class="sep">|</span>
-        <span class="cat-items">Fresh Apple / Fresh Orange / Petite Banana / Fresh Fruit / Raisins</span>
-      </div>
-      <div class="cat-row">
-        <span class="cat-name">Grains</span><span class="sep">|</span>
-        <span class="cat-items">Whole Grain Artisan Roll</span>
-      </div>
-      <div class="cat-row">
-        <span class="cat-name">Milk</span><span class="sep">|</span>
-        <span class="cat-items">1% Milk / Nonfat Milk</span>
-      </div></div>
-    </div>
   </div>
-  <footer>Updated 8:00 AM PT &bull; menu.ulfhedinn.net</footer>
+  <footer>Updated 12:05 PM PT &bull; menu.ulfhedinn.net</footer>
 </body>
 </html>
