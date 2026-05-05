@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=800">
-  <title>Roy Cloud Menu — Tuesday, May 5</title>
+  <title>Roy Cloud Menu — Wednesday, May 6</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -14,41 +14,67 @@
       display: flex; flex-direction: column;
       padding: 14px 20px 10px;
     }
-    .header { text-align: center; border-bottom: 3px solid #000; padding-bottom: 8px; margin-bottom: 14px; }
-    .day { font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: bold; }
-    .school { font-size: 18px; font-style: italic; }
-    .cols { display: flex; gap: 0; flex: 1; }
-    .col { flex: 1; display: flex; flex-direction: column; padding: 0 16px; }
-    .col:first-child { border-right: 2px solid #000; padding-left: 0; }
-    .col:last-child { padding-right: 0; }
-    .col-title { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: bold; border-bottom: 1px solid #000; padding-bottom: 5px; margin-bottom: 10px; }
-    .entrees { flex: 1; display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
-    .entree-item { font-size: 20px; line-height: 1.25; font-weight: bold; }
-    .also-label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: bold; margin-bottom: 4px; border-top: 1px dashed #000; padding-top: 6px; }
-    .also-items { font-size: 13px; line-height: 1.5; }
+    .header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      border-bottom: 3px solid #000;
+      padding-bottom: 8px; margin-bottom: 12px;
+    }
+    .school { font-size: 22px; font-weight: bold; letter-spacing: 0.02em; text-transform: uppercase; }
+    .date-label { font-size: 14px; font-style: italic; }
+    .meals { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .meal-block { border-left: 4px solid #000; padding-left: 12px; }
+    .meal-title { font-size: 13px; font-weight: bold; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px; }
+    .cat-rows { display: flex; flex-direction: column; gap: 3px; }
+    .cat-row { display: flex; font-size: 13px; line-height: 1.4; }
+    .cat-name { font-weight: bold; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; min-width: 72px; padding-top: 1px; flex-shrink: 0; }
+    .cat-items { flex: 1; }
+    .divider { border: none; border-top: 1px solid #000; margin: 4px 0; }
     .no-menu { font-size: 13px; font-style: italic; }
-    footer { font-size: 10px; text-align: right; border-top: 1px solid #000; padding-top: 5px; margin-top: 8px; }
+    footer { font-size: 10px; text-align: right; border-top: 1px solid #000; padding-top: 5px; margin-top: 6px; }
   </style>
 </head>
 <body>
   <div class="header">
-    <div class="day">Today — Tuesday, May 5</div>
-    <div class="school">Roy Cloud School</div>
+    <span class="school">Roy Cloud School</span>
+    <span class="date-label">Tomorrow — Wednesday, May 6</span>
   </div>
-  <div class="cols">
-    
-      <div class="col">
-        <div class="col-title">🍳 Breakfast</div>
-        <div class="entrees"><div class="entree-item">Cheerios or Rice Chex Cereal</div><div class="entree-item">Chocolate Croissant</div><div class="entree-item">French Croissant- WG</div><div class="entree-item">Plain Bagel</div><div class="entree-item">Blueberry Bagel- Bonami</div><div class="entree-item">Whole Wheat Bagel w/ Cheese and Jalapeno</div><div class="entree-item">Whole Wheat Bagel with cinnamon/sugar (in house)</div><div class="entree-item">Nature's Bakery bar</div></div>
-        <div class="also-label">Also available</div><div class="also-items">Fresh Apple · Fresh Orange · Petite Banana · Fresh Fruit · 100% Fruit Juice · Raisins · 1% Milk · Fat Free Unflavored Milk · Cream Cheese Cup · String Cheese</div>
+  <div class="meals">
+    <div class="meal-block"><div class="meal-title">🍳 Breakfast</div><div class="cat-rows">
+      <div class="cat-row">
+        <span class="cat-name">Breakfast Entree</span>
+        <span class="cat-items">Cheerios or Rice Chex Cereal · Concha WG- Bonami · Plain Bagel · Blueberry Bagel- Bonami · Whole Wheat Bagel w/ Cheese and Jalapeno · Whole Wheat Bagel with cinnamon/sugar (in house)</span>
       </div>
-    
-      <div class="col">
-        <div class="col-title">🍽️ Lunch</div>
-        <div class="entrees"><div class="entree-item">Locally Made Cheese Pizza</div><div class="entree-item">Locally Made Pepperoni Pizza</div><div class="entree-item">Whole Wheat Chicken Salad Wrap (scratch)</div></div>
-        <div class="also-label">Also available</div><div class="also-items">Caesar Salad FS · Roasted asparagus w/lemon · Green mixed salad w/ Italian Dressing · Sugar Snap Peas · Crimini Mushrooms · Fresh Apple · Fresh Orange · Petite Banana · Fresh Fruit · Raisins · 1% Milk · Fat Free Unflavored Milk</div>
+      <div class="cat-row">
+        <span class="cat-name">Fruit</span>
+        <span class="cat-items">Fresh Apple · Fresh Orange · Petite Banana · Fresh Fruit · 100% Fruit Juice · Raisins</span>
       </div>
+      <div class="cat-row">
+        <span class="cat-name">Milk</span>
+        <span class="cat-items">1% Milk · Nonfat Milk</span>
+      </div>
+      <div class="cat-row">
+        <span class="cat-name">Misc.</span>
+        <span class="cat-items">String Cheese · Cream Cheese Cup</span>
+      </div></div></div>
+    <hr class="divider">
+    <div class="meal-block"><div class="meal-title">🍽️ Lunch</div><div class="cat-rows">
+      <div class="cat-row">
+        <span class="cat-name">Lunch Entree</span>
+        <span class="cat-items">Grilled Cheese w/ Turkey · Chicken Nuggets w/White Rice and Teriyaki (scratch) · Cheese quesadilla--made in house</span>
+      </div>
+      <div class="cat-row">
+        <span class="cat-name">Vegetables</span>
+        <span class="cat-items">Roasted Cauliflower · Simply Steamed Green Beans · Green mixed salad w/ Italian Dressing · Crimini Mushrooms · Sugar Snap Peas</span>
+      </div>
+      <div class="cat-row">
+        <span class="cat-name">Fruit</span>
+        <span class="cat-items">Fresh Apple · Fresh Orange · Petite Banana · Fresh Fruit · Raisins</span>
+      </div>
+      <div class="cat-row">
+        <span class="cat-name">Milk</span>
+        <span class="cat-items">1% Milk · Nonfat Milk</span>
+      </div></div></div>
   </div>
-  <footer>Updated 12:02 PM PT &bull; menu.ulfhedinn.net</footer>
+  <footer>Updated 3:01 PM PT &bull; menu.ulfhedinn.net</footer>
 </body>
 </html>
