@@ -67,6 +67,11 @@ function pacificHour(date) {
   return parseInt(date.toLocaleString('en-US', { timeZone: TZ, hour: 'numeric', hour12: false }));
 }
 
+/** Returns true if today is Wednesday in Pacific time */
+function isTodayWednesdayPT() {
+  return new Date().toLocaleDateString('en-US', { timeZone: TZ, weekday: 'long' }) === 'Wednesday';
+}
+
 /**
  * Find the target date: today if there's a menu, otherwise the next school day.
  * After 1 PM PT, flips to show tomorrow's menu so families can plan ahead.
@@ -135,7 +140,7 @@ async function findTargetMenu() {
 
 // ─── Theme A: Stacked rows, left-bordered meal blocks ────────────────────────
 
-function buildHtml_A({ heading, dayLabel, breakfast, lunch, updatedAt }) {
+function buildHtml_A({ heading, dayLabel, breakfast, lunch, updatedAt, reminderBanner }) {
   function renderMeal(label, emoji, menu) {
     if (!menu || menu.noEntry || menu.categories.length === 0) {
       return `<div class="meal-block"><div class="meal-title">${emoji} ${label}</div><p class="no-menu">No menu posted</p></div>`;
@@ -184,6 +189,7 @@ function buildHtml_A({ heading, dayLabel, breakfast, lunch, updatedAt }) {
     .divider { border: none; border-top: 1px solid #000; margin: 4px 0; }
     .no-menu { font-size: 13px; font-style: italic; }
     footer { font-size: 10px; text-align: right; border-top: 1px solid #000; padding-top: 5px; margin-top: 6px; }
+    .reminder-banner { background: #000; color: #fff; text-align: center; font-size: 13px; font-weight: bold; letter-spacing: 0.05em; padding: 5px 12px; margin-bottom: 8px; }
   </style>
 </head>
 <body>
@@ -191,6 +197,7 @@ function buildHtml_A({ heading, dayLabel, breakfast, lunch, updatedAt }) {
     <span class="school">Roy Cloud School</span>
     <span class="date-label">${heading}</span>
   </div>
+  ${reminderBanner}
   <div class="meals">
     ${renderMeal('Breakfast', '🍳', breakfast)}
     <hr class="divider">
@@ -203,7 +210,7 @@ function buildHtml_A({ heading, dayLabel, breakfast, lunch, updatedAt }) {
 
 // ─── Theme B: Big entree focus, sides condensed ───────────────────────────────
 
-function buildHtml_B({ heading, dayLabel, breakfast, lunch, updatedAt }) {
+function buildHtml_B({ heading, dayLabel, breakfast, lunch, updatedAt, reminderBanner }) {
   function splitMenu(menu) {
     if (!menu || menu.noEntry || menu.noSchool || menu.categories.length === 0) return { entrees: [], sides: [] };
     const entrees = [];
@@ -268,6 +275,7 @@ function buildHtml_B({ heading, dayLabel, breakfast, lunch, updatedAt }) {
     .also-items { font-size: 13px; line-height: 1.5; }
     .no-menu { font-size: 13px; font-style: italic; }
     footer { font-size: 10px; text-align: right; border-top: 1px solid #000; padding-top: 5px; margin-top: 8px; }
+    .reminder-banner { background: #000; color: #fff; text-align: center; font-size: 13px; font-weight: bold; letter-spacing: 0.05em; padding: 5px 12px; margin-bottom: 8px; }
   </style>
 </head>
 <body>
@@ -275,6 +283,7 @@ function buildHtml_B({ heading, dayLabel, breakfast, lunch, updatedAt }) {
     <div class="day">${heading}</div>
     <div class="school">Roy Cloud School</div>
   </div>
+  ${reminderBanner}
   <div class="cols">
     ${renderCol('Breakfast', '🍳', breakfast)}
     ${renderCol('Lunch', '🍽️', lunch)}
@@ -286,7 +295,7 @@ function buildHtml_B({ heading, dayLabel, breakfast, lunch, updatedAt }) {
 
 // ─── Theme C: Monospace table, pure black ────────────────────────────────────
 
-function buildHtml_C({ heading, dayLabel, breakfast, lunch, updatedAt }) {
+function buildHtml_C({ heading, dayLabel, breakfast, lunch, updatedAt, reminderBanner }) {
   function renderMeal(label, menu) {
     if (!menu || menu.noEntry || menu.categories.length === 0) {
       return `<div class="cat-rows"><div class="cat-row"><span class="cat-name">Info</span><span class="sep">|</span><span class="cat-items">No menu posted</span></div></div>`;
@@ -338,6 +347,7 @@ function buildHtml_C({ heading, dayLabel, breakfast, lunch, updatedAt }) {
     .sep { margin: 0 8px; flex-shrink: 0; }
     .cat-items { flex: 1; }
     footer { font-size: 9px; text-align: right; border-top: 2px solid #000; padding: 4px 20px; letter-spacing: 0.05em; text-transform: uppercase; }
+    .reminder-banner { background: #000; color: #fff; text-align: center; font-size: 11px; font-weight: bold; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 20px; }
   </style>
 </head>
 <body>
@@ -345,6 +355,7 @@ function buildHtml_C({ heading, dayLabel, breakfast, lunch, updatedAt }) {
     <span>Roy Cloud School</span>
     <span>${heading}</span>
   </div>
+  ${reminderBanner}
   <div class="content">
     <div class="meal-section">
       <div class="meal-header">/// Breakfast</div>
@@ -372,10 +383,14 @@ async function main() {
   const heading = isToday ? `Today — ${dayLabel}` : isTomorrow ? `Tomorrow — ${dayLabel}` : `Coming up — ${dayLabel}`;
   const updatedAt = new Date().toLocaleTimeString('en-US', { timeZone: TZ, hour: 'numeric', minute: '2-digit' });
 
+  const reminderBanner = isTodayWednesdayPT()
+    ? `<div class="reminder-banner">🛒 Student Store tomorrow — bring money!</div>`
+    : '';
+
   const themes = [buildHtml_A, buildHtml_B, buildHtml_C];
   const themeNames = ['A (stacked rows)', 'B (entree focus)', 'C (monospace)'];
   const pick = Math.floor(Math.random() * themes.length);
-  const html = themes[pick]({ heading, dayLabel, breakfast, lunch, updatedAt });
+  const html = themes[pick]({ heading, dayLabel, breakfast, lunch, updatedAt, reminderBanner });
 
   fs.writeFileSync('docs/index.html', html);
   console.log(`Generated docs/index.html — ${heading} [theme ${themeNames[pick]}]`);
