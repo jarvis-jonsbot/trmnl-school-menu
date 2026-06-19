@@ -14,33 +14,37 @@
       display: flex; flex-direction: column;
       padding: 14px 20px 10px;
     }
-    .header { text-align: center; border-bottom: 3px solid #000; padding-bottom: 8px; margin-bottom: 14px; }
-    .day { font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: bold; }
-    .school { font-size: 18px; font-style: italic; }
-    .cols { display: flex; gap: 0; flex: 1; }
-    .col { flex: 1; display: flex; flex-direction: column; padding: 0 16px; }
-    .col:first-child { border-right: 2px solid #000; padding-left: 0; }
-    .col:last-child { padding-right: 0; }
-    .col-title { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: bold; border-bottom: 1px solid #000; padding-bottom: 5px; margin-bottom: 10px; }
-    .entrees { flex: 1; display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
-    .entree-item { font-size: 20px; line-height: 1.25; font-weight: bold; }
-    .also-label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: bold; margin-bottom: 4px; border-top: 1px dashed #000; padding-top: 6px; }
-    .also-items { font-size: 13px; line-height: 1.5; }
+    .header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      border-bottom: 3px solid #000;
+      padding-bottom: 8px; margin-bottom: 12px;
+    }
+    .school { font-size: 22px; font-weight: bold; letter-spacing: 0.02em; text-transform: uppercase; }
+    .date-label { font-size: 14px; font-style: italic; }
+    .meals { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .meal-block { border-left: 4px solid #000; padding-left: 12px; }
+    .meal-title { font-size: 13px; font-weight: bold; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px; }
+    .cat-rows { display: flex; flex-direction: column; gap: 3px; }
+    .cat-row { display: flex; font-size: 13px; line-height: 1.4; }
+    .cat-name { font-weight: bold; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; min-width: 72px; padding-top: 1px; flex-shrink: 0; }
+    .cat-items { flex: 1; }
+    .divider { border: none; border-top: 1px solid #000; margin: 4px 0; }
     .no-menu { font-size: 13px; font-style: italic; }
-    footer { font-size: 10px; text-align: right; border-top: 1px solid #000; padding-top: 5px; margin-top: 8px; }
+    footer { font-size: 10px; text-align: right; border-top: 1px solid #000; padding-top: 5px; margin-top: 6px; }
     .reminder-banner { background: #000; color: #fff; text-align: center; font-size: 13px; font-weight: bold; letter-spacing: 0.05em; padding: 5px 12px; margin-bottom: 8px; }
   </style>
 </head>
 <body>
   <div class="header">
-    <div class="day">Tomorrow — Friday, June 19</div>
-    <div class="school">Roy Cloud School</div>
+    <span class="school">Roy Cloud School</span>
+    <span class="date-label">Today — Friday, June 19</span>
   </div>
   
-  <div class="cols">
-    <div class="col"><div class="col-title">🍳 Breakfast</div><p class="no-menu">No menu posted</p></div>
-    <div class="col"><div class="col-title">🍽️ Lunch</div><p class="no-menu">No menu posted</p></div>
+  <div class="meals">
+    <div class="meal-block"><div class="meal-title">🍳 Breakfast</div><p class="no-menu">No menu posted</p></div>
+    <hr class="divider">
+    <div class="meal-block"><div class="meal-title">🍽️ Lunch</div><p class="no-menu">No menu posted</p></div>
   </div>
-  <footer>Updated 3:56 PM PT &bull; menu.ulfhedinn.net</footer>
+  <footer>Updated 8:54 AM PT &bull; menu.ulfhedinn.net</footer>
 </body>
 </html>
