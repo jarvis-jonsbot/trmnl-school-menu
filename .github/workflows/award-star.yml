@@ -1,0 +1,135 @@
+name: Award Star
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Date to award star for (YYYY-MM-DD). Defaults to today in America/Los_Angeles.'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  award:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Record star
+        env:
+          INPUT_DATE: ${{ inputs.date }}
+        run: |
+          node << 'JS'
+          const fs = require('fs');
+
+          const QUESTS = [
+            {"category":"Art & Craft","icon":"🎨","quest":"Draw a dragon"},
+            {"category":"Art & Craft","icon":"🎨","quest":"Make a bookmark"},
+            {"category":"Art & Craft","icon":"🎨","quest":"Design a superhero"},
+            {"category":"Art & Craft","icon":"🎨","quest":"Draw a mermaid's house"},
+            {"category":"Art & Craft","icon":"🎨","quest":"Make a paper crown"},
+            {"category":"Art & Craft","icon":"🎨","quest":"Create a comic strip"},
+            {"category":"Art & Craft","icon":"🎨","quest":"Draw a map"},
+            {"category":"Art & Craft","icon":"🎨","quest":"Design your dream room"},
+            {"category":"Art & Craft","icon":"🎨","quest":"Make paper animals"},
+            {"category":"Art & Craft","icon":"🎨","quest":"Draw a magical forest"},
+            {"category":"Outdoor Adventure","icon":"🌿","quest":"Find 3 kinds of bugs"},
+            {"category":"Outdoor Adventure","icon":"🌿","quest":"Collect 5 leaves"},
+            {"category":"Outdoor Adventure","icon":"🌿","quest":"Cloud watch for 5 minutes"},
+            {"category":"Outdoor Adventure","icon":"🌿","quest":"Find something that smells nice"},
+            {"category":"Outdoor Adventure","icon":"🌿","quest":"Count bird sounds"},
+            {"category":"Outdoor Adventure","icon":"🌿","quest":"Build a fairy house"},
+            {"category":"Outdoor Adventure","icon":"🌿","quest":"Rainbow color hunt"},
+            {"category":"Outdoor Adventure","icon":"🌿","quest":"Find the biggest rock"},
+            {"category":"Outdoor Adventure","icon":"🌿","quest":"Make a mud pie"},
+            {"category":"Outdoor Adventure","icon":"🌿","quest":"Walk Kátur an extra block"},
+            {"category":"Learning & Brain","icon":"📚","quest":"Learn a word in a new language"},
+            {"category":"Learning & Brain","icon":"📚","quest":"Read for 20 minutes"},
+            {"category":"Learning & Brain","icon":"📚","quest":"Write a summer poem"},
+            {"category":"Learning & Brain","icon":"📚","quest":"Learn 5 new spelling words"},
+            {"category":"Learning & Brain","icon":"📚","quest":"Write a letter to future you"},
+            {"category":"Learning & Brain","icon":"📚","quest":"Learn 3 planet names"},
+            {"category":"Learning & Brain","icon":"📚","quest":"Write a story"},
+            {"category":"Learning & Brain","icon":"📚","quest":"Memorize a short poem"},
+            {"category":"Learning & Brain","icon":"📚","quest":"Draw a butterfly life cycle"},
+            {"category":"Learning & Brain","icon":"📚","quest":"Count to 100 by 5s"},
+            {"category":"Kitchen Magic","icon":"🍳","quest":"Make a fruit salad"},
+            {"category":"Kitchen Magic","icon":"🍳","quest":"Help make breakfast"},
+            {"category":"Kitchen Magic","icon":"🍳","quest":"Invent a sandwich"},
+            {"category":"Kitchen Magic","icon":"🍳","quest":"Make lemonade"},
+            {"category":"Kitchen Magic","icon":"🍳","quest":"Make a smoothie"},
+            {"category":"Kitchen Magic","icon":"🍳","quest":"Build a snack tower"},
+            {"category":"Kitchen Magic","icon":"🍳","quest":"Make ants on a log"},
+            {"category":"Kitchen Magic","icon":"🍳","quest":"Set a fancy table"},
+            {"category":"Kitchen Magic","icon":"🍳","quest":"Make a fruit kabob"},
+            {"category":"Kitchen Magic","icon":"🍳","quest":"Decorate a cookie"},
+            {"category":"Kindness Mission","icon":"🌟","quest":"Write a love note"},
+            {"category":"Kindness Mission","icon":"🌟","quest":"Do a surprise chore"},
+            {"category":"Kindness Mission","icon":"🌟","quest":"Give Kátur extra love"},
+            {"category":"Kindness Mission","icon":"🌟","quest":"Say 3 nice things"},
+            {"category":"Kindness Mission","icon":"🌟","quest":"Draw art for a faraway person"},
+            {"category":"Kindness Mission","icon":"🌟","quest":"Share your favorite snack"},
+            {"category":"Kindness Mission","icon":"🌟","quest":"Make a card for a grandparent"},
+            {"category":"Kindness Mission","icon":"🌟","quest":"Say thank you creatively"},
+            {"category":"Kindness Mission","icon":"🌟","quest":"Help without being asked"},
+            {"category":"Kindness Mission","icon":"🌟","quest":"Compliment a stranger"},
+            {"category":"Science & Discovery","icon":"🔬","quest":"Make a rainbow"},
+            {"category":"Science & Discovery","icon":"🔬","quest":"Volcano time!"},
+            {"category":"Science & Discovery","icon":"🔬","quest":"Test paper airplanes"},
+            {"category":"Science & Discovery","icon":"🔬","quest":"Make oobleck"},
+            {"category":"Science & Discovery","icon":"🔬","quest":"Magnet hunt"},
+            {"category":"Science & Discovery","icon":"🔬","quest":"Grow a sprout"},
+            {"category":"Science & Discovery","icon":"🔬","quest":"Trace your shadow"},
+            {"category":"Science & Discovery","icon":"🔬","quest":"Tiny world expedition"},
+            {"category":"Science & Discovery","icon":"🔬","quest":"Weather forecaster"},
+            {"category":"Science & Discovery","icon":"🔬","quest":"Color-drinking flower"},
+            {"category":"Fun & Games","icon":"🎮","quest":"Invent a new game"},
+            {"category":"Fun & Games","icon":"🎮","quest":"Build the tallest tower"},
+            {"category":"Fun & Games","icon":"🎮","quest":"Make up a dance"},
+            {"category":"Fun & Games","icon":"🎮","quest":"I Spy challenge"},
+            {"category":"Fun & Games","icon":"🎮","quest":"Build a blanket fort"},
+            {"category":"Fun & Games","icon":"🎮","quest":"Hot lava floor!"},
+            {"category":"Fun & Games","icon":"🎮","quest":"Learn a magic trick"},
+            {"category":"Fun & Games","icon":"🎮","quest":"Backyard obstacle course"},
+            {"category":"Fun & Games","icon":"🎮","quest":"Play a board game"},
+            {"category":"Fun & Games","icon":"🎮","quest":"Put on a puppet show"}
+          ];
+
+          const inputDate = process.env.INPUT_DATE;
+          let dateStr;
+          if (inputDate && inputDate.trim()) {
+            dateStr = inputDate.trim();
+          } else {
+            dateStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' });
+          }
+
+          const [y, m, d] = dateStr.split('-').map(Number);
+          const dayOfYear = Math.floor((new Date(y, m-1, d) - new Date(y, 0, 1)) / 86400000);
+          const quest = QUESTS[dayOfYear % QUESTS.length];
+
+          const starPath = 'docs/stars.json';
+          let data = JSON.parse(fs.readFileSync(starPath, 'utf8'));
+
+          if (data.log.some(e => e.date === dateStr)) {
+            console.log(`Already has a star for ${dateStr} — skipping.`);
+            process.exit(0);
+          }
+
+          data.total += 1;
+          data.log.push({ date: dateStr, quest: quest.quest, category: quest.category, icon: quest.icon });
+          fs.writeFileSync(starPath, JSON.stringify(data, null, 2) + '\n');
+          console.log(`Star #${data.total} awarded for ${dateStr}: [${quest.category}] ${quest.quest}`);
+          JS
+
+      - name: Commit and push
+        run: |
+          git config user.name "Jarvis Jónsbot"
+          git config user.email "jarvis.jonsbot@icloud.com"
+          git add docs/stars.json
+          git diff --cached --quiet && echo "No changes to commit." && exit 0
+          TOTAL=$(node -pe "JSON.parse(require('fs').readFileSync('docs/stars.json','utf8')).total")
+          QUEST=$(node -pe "const d=JSON.parse(require('fs').readFileSync('docs/stars.json','utf8'));d.log.at(-1).quest")
+          git commit -m "⭐ Star #${TOTAL}: ${QUEST}"
+          git push
