@@ -138,6 +138,183 @@ async function findTargetMenu() {
   };
 }
 
+// ─── Summer Quest Board ───────────────────────────────────────────────────────
+
+/** True if today (Pacific) is summer break: June 21 – August 31 */
+function isSummer() {
+  const [, m, d] = pacificDateStr(new Date()).split('-').map(Number);
+  return (m === 6 && d >= 21) || m === 7 || m === 8;
+}
+
+const QUESTS = [
+  // 🎨 Art & Craft
+  { category: 'Art & Craft', icon: '🎨', quest: 'Draw a dragon', detail: 'Make it fierce — add treasure for it to guard!' },
+  { category: 'Art & Craft', icon: '🎨', quest: 'Make a bookmark', detail: 'Decorate it for your very favorite book.' },
+  { category: 'Art & Craft', icon: '🎨', quest: 'Design a superhero', detail: 'Draw their costume and invent their superpower.' },
+  { category: 'Art & Craft', icon: '🎨', quest: "Draw a mermaid's house", detail: 'What furniture do mermaids have underwater?' },
+  { category: 'Art & Craft', icon: '🎨', quest: 'Make a paper crown', detail: 'Decorate it with gems, stars, and anything sparkly.' },
+  { category: 'Art & Craft', icon: '🎨', quest: 'Create a comic strip', detail: 'Tell a story in 4 panels. You choose the hero!' },
+  { category: 'Art & Craft', icon: '🎨', quest: 'Draw a map', detail: 'Map your house or neighborhood with secret spots.' },
+  { category: 'Art & Craft', icon: '🎨', quest: 'Design your dream room', detail: 'What would your perfect bedroom look like?' },
+  { category: 'Art & Craft', icon: '🎨', quest: 'Make paper animals', detail: 'Fold 3 different animals and give them silly names.' },
+  { category: 'Art & Craft', icon: '🎨', quest: 'Draw a magical forest', detail: 'Fill it with creatures only you can see.' },
+  // 🌿 Outdoor Adventure
+  { category: 'Outdoor Adventure', icon: '🌿', quest: 'Find 3 kinds of bugs', detail: 'Look under rocks, in grass, and near flowers.' },
+  { category: 'Outdoor Adventure', icon: '🌿', quest: 'Collect 5 leaves', detail: 'Pick different shapes and make a collage.' },
+  { category: 'Outdoor Adventure', icon: '🌿', quest: 'Cloud watch for 5 minutes', detail: 'Draw 3 shapes you spotted in the sky.' },
+  { category: 'Outdoor Adventure', icon: '🌿', quest: 'Find something that smells nice', detail: 'No flowers allowed — find something surprising!' },
+  { category: 'Outdoor Adventure', icon: '🌿', quest: 'Count bird sounds', detail: 'Sit quietly outside and count different calls.' },
+  { category: 'Outdoor Adventure', icon: '🌿', quest: 'Build a fairy house', detail: 'Use sticks, leaves, and pebbles. Tiny furniture is a bonus!' },
+  { category: 'Outdoor Adventure', icon: '🌿', quest: 'Rainbow color hunt', detail: 'Find one thing in every color of the rainbow.' },
+  { category: 'Outdoor Adventure', icon: '🌿', quest: 'Find the biggest rock', detail: 'Carry it! How heavy is it? Draw it with a label.' },
+  { category: 'Outdoor Adventure', icon: '🌿', quest: 'Make a mud pie', detail: 'The messier, the better. Decorate with petals.' },
+  { category: 'Outdoor Adventure', icon: '🌿', quest: 'Walk Kátur an extra block', detail: 'Let him choose the direction at every corner.' },
+  // 📚 Learning & Brain
+  { category: 'Learning & Brain', icon: '📚', quest: 'Learn a word in a new language', detail: 'Teach it to someone before the day is over.' },
+  { category: 'Learning & Brain', icon: '📚', quest: 'Read for 20 minutes', detail: 'Pick the book YOU want — no rules on which.' },
+  { category: 'Learning & Brain', icon: '📚', quest: 'Write a summer poem', detail: 'It can rhyme or not. 4 lines is plenty.' },
+  { category: 'Learning & Brain', icon: '📚', quest: 'Learn 5 new spelling words', detail: 'Write a sentence with each one.' },
+  { category: 'Learning & Brain', icon: '📚', quest: 'Write a letter to future you', detail: 'Seal it! Open it when summer ends.' },
+  { category: 'Learning & Brain', icon: '📚', quest: 'Learn 3 planet names', detail: 'Find their order from the sun. Quiz someone!' },
+  { category: 'Learning & Brain', icon: '📚', quest: 'Write a story', detail: 'It must start: "One magical morning..."' },
+  { category: 'Learning & Brain', icon: '📚', quest: 'Memorize a short poem', detail: 'Recite it to someone from memory.' },
+  { category: 'Learning & Brain', icon: '📚', quest: 'Draw a butterfly life cycle', detail: 'Egg → caterpillar → chrysalis → butterfly.' },
+  { category: 'Learning & Brain', icon: '📚', quest: 'Count to 100 by 5s', detail: 'Time yourself. Can you beat 30 seconds?' },
+  // 🍳 Kitchen Magic
+  { category: 'Kitchen Magic', icon: '🍳', quest: 'Make a fruit salad', detail: "Use at least 4 different fruits. You're the chef!" },
+  { category: 'Kitchen Magic', icon: '🍳', quest: 'Help make breakfast', detail: 'Contribute at least one thing — eggs, toast, juice.' },
+  { category: 'Kitchen Magic', icon: '🍳', quest: 'Invent a sandwich', detail: 'Name it after yourself. Write down the recipe.' },
+  { category: 'Kitchen Magic', icon: '🍳', quest: 'Make lemonade', detail: 'From real lemons! Add something secret for flavor.' },
+  { category: 'Kitchen Magic', icon: '🍳', quest: 'Make a smoothie', detail: 'Only 3 ingredients allowed. Make it delicious.' },
+  { category: 'Kitchen Magic', icon: '🍳', quest: 'Build a snack tower', detail: 'Stack food as tall as you can — then eat it!' },
+  { category: 'Kitchen Magic', icon: '🍳', quest: 'Make ants on a log', detail: 'Celery + peanut butter + raisins. Classic!' },
+  { category: 'Kitchen Magic', icon: '🍳', quest: 'Set a fancy table', detail: 'Napkin folds, place cards, the works. Impress the family.' },
+  { category: 'Kitchen Magic', icon: '🍳', quest: 'Make a fruit kabob', detail: 'At least 5 pieces per stick. Make 2!' },
+  { category: 'Kitchen Magic', icon: '🍳', quest: 'Decorate a cookie', detail: 'Use frosting and whatever toppings you can find.' },
+  // 🌟 Kindness Mission
+  { category: 'Kindness Mission', icon: '🌟', quest: 'Write a love note', detail: 'Tell someone exactly what you love about them.' },
+  { category: 'Kindness Mission', icon: '🌟', quest: 'Do a surprise chore', detail: "Clean something you didn't mess up. Don't tell anyone." },
+  { category: 'Kindness Mission', icon: '🌟', quest: 'Give Kátur extra love', detail: 'Long belly rub, extra treats, lots of cuddles.' },
+  { category: 'Kindness Mission', icon: '🌟', quest: 'Say 3 nice things', detail: 'Tell 3 different people one thing you love about them.' },
+  { category: 'Kindness Mission', icon: '🌟', quest: 'Draw art for a faraway person', detail: 'Mail it or send a photo. Make their day.' },
+  { category: 'Kindness Mission', icon: '🌟', quest: 'Share your favorite snack', detail: 'Offer some to everyone in the house first.' },
+  { category: 'Kindness Mission', icon: '🌟', quest: 'Make a card for a grandparent', detail: 'Draw something that will make them smile.' },
+  { category: 'Kindness Mission', icon: '🌟', quest: 'Say thank you creatively', detail: "No boring 'thanks' — make it funny or surprising." },
+  { category: 'Kindness Mission', icon: '🌟', quest: 'Help without being asked', detail: 'Notice something that needs doing and just do it.' },
+  { category: 'Kindness Mission', icon: '🌟', quest: 'Compliment a stranger', detail: "A smile counts. Make someone's day a little better." },
+  // 🔬 Science & Discovery
+  { category: 'Science & Discovery', icon: '🔬', quest: 'Make a rainbow', detail: 'Put a glass of water in sunlight. Catch the colors!' },
+  { category: 'Science & Discovery', icon: '🔬', quest: 'Volcano time!', detail: 'Baking soda + vinegar. Add food coloring for drama.' },
+  { category: 'Science & Discovery', icon: '🔬', quest: 'Test paper airplanes', detail: 'Fold 3 designs. Which one flies the farthest?' },
+  { category: 'Science & Discovery', icon: '🔬', quest: 'Make oobleck', detail: 'Cornstarch + water. Is it a liquid or a solid?' },
+  { category: 'Science & Discovery', icon: '🔬', quest: 'Magnet hunt', detail: 'Count how many things a magnet sticks to in one room.' },
+  { category: 'Science & Discovery', icon: '🔬', quest: 'Grow a sprout', detail: 'Put a bean in a wet paper towel. Check it tomorrow!' },
+  { category: 'Science & Discovery', icon: '🔬', quest: 'Trace your shadow', detail: 'Trace it in the morning AND afternoon. What changed?' },
+  { category: 'Science & Discovery', icon: '🔬', quest: 'Tiny world expedition', detail: 'Use a magnifying glass on 5 different things.' },
+  { category: 'Science & Discovery', icon: '🔬', quest: 'Weather forecaster', detail: "Predict tomorrow's weather. Check if you were right!" },
+  { category: 'Science & Discovery', icon: '🔬', quest: 'Color-drinking flower', detail: 'Put a white flower in colored water. Wait and watch.' },
+  // 🎮 Fun & Games
+  { category: 'Fun & Games', icon: '🎮', quest: 'Invent a new game', detail: 'Write the rules. Teach it to at least one person.' },
+  { category: 'Fun & Games', icon: '🎮', quest: 'Build the tallest tower', detail: 'Use only household items. No glue allowed!' },
+  { category: 'Fun & Games', icon: '🎮', quest: 'Make up a dance', detail: 'To your favorite song. Perform it for someone.' },
+  { category: 'Fun & Games', icon: '🎮', quest: 'I Spy challenge', detail: 'Play 3 rounds — you go first with the hardest one.' },
+  { category: 'Fun & Games', icon: '🎮', quest: 'Build a blanket fort', detail: 'Read a whole book inside it. No peeking out.' },
+  { category: 'Fun & Games', icon: '🎮', quest: 'Hot lava floor!', detail: 'Cross the living room without touching the ground.' },
+  { category: 'Fun & Games', icon: '🎮', quest: 'Learn a magic trick', detail: 'Practice it until you can do it without laughing.' },
+  { category: 'Fun & Games', icon: '🎮', quest: 'Backyard obstacle course', detail: 'Set it up, run it 3 times. Beat your own time!' },
+  { category: 'Fun & Games', icon: '🎮', quest: 'Play a board game', detail: 'Be a gracious winner AND a gracious loser. Both matter.' },
+  { category: 'Fun & Games', icon: '🎮', quest: 'Put on a puppet show', detail: 'Make the puppets from socks. 3-minute performance!' },
+];
+
+function buildQuestHtml() {
+  const questsJson = JSON.stringify(QUESTS);
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=800">
+  <title>Aurora's Summer Quest</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 800px; height: 480px;
+      background: #fff; color: #000;
+      font-family: 'Courier New', Courier, monospace;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .top-bar {
+      background: #000; color: #fff;
+      padding: 10px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 15px; font-weight: bold; letter-spacing: 0.12em; text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .cat-bar {
+      padding: 8px 20px;
+      border-bottom: 2px solid #000;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: bold; letter-spacing: 0.2em; text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .cat-icon { font-size: 20px; }
+    .summer-day { margin-left: auto; font-weight: normal; font-size: 12px; letter-spacing: 0.05em; }
+    .main {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 20px 56px; text-align: center; gap: 14px;
+    }
+    .quest-text { font-size: 46px; font-weight: bold; line-height: 1.2; letter-spacing: 0.01em; }
+    .quest-detail { font-size: 16px; color: #333; line-height: 1.5; }
+    .footer {
+      border-top: 3px double #000;
+      padding: 10px 20px; text-align: center;
+      font-size: 13px; font-weight: bold; letter-spacing: 0.12em; text-transform: uppercase;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <span>✨ Aurora's Summer Quest ✨</span>
+    <span id="date-label"></span>
+  </div>
+  <div class="cat-bar">
+    <span id="cat-icon" class="cat-icon"></span>
+    <span id="cat-name"></span>
+    <span id="summer-day" class="summer-day"></span>
+  </div>
+  <div class="main">
+    <div id="quest-text" class="quest-text"></div>
+    <div id="quest-detail" class="quest-detail"></div>
+  </div>
+  <div class="footer">⭐ Complete your quest and earn a star! ⭐</div>
+  <script>
+    const QUESTS = ${questsJson};
+
+    const TZ = 'America/Los_Angeles';
+    const dateStr = new Date().toLocaleDateString('en-CA', { timeZone: TZ });
+    const [y, m, d] = dateStr.split('-').map(Number);
+
+    const dayOfYear = Math.floor((new Date(y, m - 1, d) - new Date(y, 0, 1)) / 86400000);
+    const quest = QUESTS[dayOfYear % QUESTS.length];
+
+    const summerStart = new Date(y, 5, 21);
+    const summerDay = Math.max(1, Math.floor((new Date(y, m - 1, d) - summerStart) / 86400000) + 1);
+
+    const dateLabel = new Date().toLocaleDateString('en-US', { timeZone: TZ, weekday: 'short', month: 'short', day: 'numeric' });
+
+    document.getElementById('date-label').textContent = dateLabel;
+    document.getElementById('cat-icon').textContent = quest.icon;
+    document.getElementById('cat-name').textContent = quest.category;
+    document.getElementById('summer-day').textContent = 'Day ' + summerDay + ' of Summer ☀️';
+    document.getElementById('quest-text').textContent = quest.quest;
+    document.getElementById('quest-detail').textContent = quest.detail;
+  </script>
+</body>
+</html>`;
+}
+
 // ─── Theme A: Stacked rows, left-bordered meal blocks ────────────────────────
 
 function buildHtml_A({ heading, dayLabel, breakfast, lunch, updatedAt, reminderBanner }) {
@@ -374,6 +551,12 @@ function buildHtml_C({ heading, dayLabel, breakfast, lunch, updatedAt, reminderB
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
+  if (isSummer()) {
+    fs.writeFileSync('docs/index.html', buildQuestHtml());
+    console.log(`Generated docs/index.html — Summer Quest mode [${pacificDateStr(new Date())}]`);
+    return;
+  }
+
   const { dateStr, isToday, isTomorrow, breakfast, lunch } = await findTargetMenu();
 
   // Format the display date in Pacific time
