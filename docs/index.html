@@ -55,7 +55,6 @@
     <span id="summer-day" class="summer-day"></span>
   </div>
   <div class="main">
-    <div id="star-strip" style="display:none; font-size:22px; letter-spacing:3px; line-height:1.3;"></div>
     <div id="quest-text" class="quest-text"></div>
     <div id="quest-detail" class="quest-detail"></div>
   </div>
@@ -81,18 +80,6 @@
     document.getElementById('summer-day').textContent = 'Day ' + summerDay + ' of Summer ☀️';
     document.getElementById('quest-text').textContent = quest.quest;
     document.getElementById('quest-detail').textContent = quest.detail;
-
-    fetch('./stars.json')
-      .then(function(r) { return r.ok ? r.json() : null; })
-      .then(function(data) {
-        if (!data || !data.total) return;
-        var n = data.total;
-        var icons = n <= 24 ? '⭐'.repeat(n) : '⭐'.repeat(24) + '  +' + (n - 24) + ' more';
-        var strip = document.getElementById('star-strip');
-        strip.textContent = icons;
-        strip.style.display = 'block';
-      })
-      .catch(function() {});
   </script>
 </body>
 </html>
