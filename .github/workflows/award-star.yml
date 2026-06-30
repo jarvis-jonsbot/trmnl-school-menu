@@ -17,6 +17,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Record star
         env:
           INPUT_DATE: ${{ inputs.date }}
@@ -123,11 +128,14 @@ jobs:
           console.log(`Star #${data.total} awarded for ${dateStr}: [${quest.category}] ${quest.quest}`);
           JS
 
+      - name: Regenerate quest page
+        run: node generate.js
+
       - name: Commit and push
         run: |
           git config user.name "Jarvis Jónsbot"
           git config user.email "jarvis.jonsbot@icloud.com"
-          git add docs/stars.json
+          git add docs/stars.json docs/index.html
           git diff --cached --quiet && echo "No changes to commit." && exit 0
           TOTAL=$(node -pe "JSON.parse(require('fs').readFileSync('docs/stars.json','utf8')).total")
           QUEST=$(node -pe "const d=JSON.parse(require('fs').readFileSync('docs/stars.json','utf8'));d.log.at(-1).quest")

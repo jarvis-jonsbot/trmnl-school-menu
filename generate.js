@@ -226,8 +226,9 @@ const QUESTS = [
   { category: 'Fun & Games', icon: '🎮', quest: 'Put on a puppet show', detail: 'Make the puppets from socks. 3-minute performance!' },
 ];
 
-function buildQuestHtml() {
+function buildQuestHtml(starsData = { total: 0, log: [] }) {
   const questsJson = JSON.stringify(QUESTS);
+  const starsJson = JSON.stringify(starsData);
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -288,21 +289,34 @@ function buildQuestHtml() {
     <div id="quest-text" class="quest-text"></div>
     <div id="quest-detail" class="quest-detail"></div>
   </div>
-  <div class="footer">⭐ Complete your quest and earn a star! ⭐</div>
+  <div id="footer" class="footer">⭐ Complete your quest and earn a star! ⭐</div>
   <script>
     const QUESTS = ${questsJson};
+    const STARS = ${starsJson};
 
     const TZ = 'America/Los_Angeles';
-    const dateStr = new Date().toLocaleDateString('en-CA', { timeZone: TZ });
-    const [y, m, d] = dateStr.split('-').map(Number);
+    const now = new Date();
 
+    // New day starts at 6 AM PT, not midnight
+    const ptDateStr = now.toLocaleDateString('en-CA', { timeZone: TZ });
+    const ptHour = parseInt(now.toLocaleString('en-US', { timeZone: TZ, hour: 'numeric', hour12: false }), 10);
+    let dateStr;
+    if (ptHour < 6) {
+      const [py, pm, pd] = ptDateStr.split('-').map(Number);
+      const prev = new Date(py, pm - 1, pd - 1);
+      dateStr = prev.toLocaleDateString('en-CA', { timeZone: TZ });
+    } else {
+      dateStr = ptDateStr;
+    }
+
+    const [y, m, d] = dateStr.split('-').map(Number);
     const dayOfYear = Math.floor((new Date(y, m - 1, d) - new Date(y, 0, 1)) / 86400000);
     const quest = QUESTS[dayOfYear % QUESTS.length];
 
     const summerStart = new Date(2026, 5, 29); // Challenge started June 29, 2026
     const summerDay = Math.max(1, Math.floor((new Date(y, m - 1, d) - summerStart) / 86400000) + 1);
 
-    const dateLabel = new Date().toLocaleDateString('en-US', { timeZone: TZ, weekday: 'short', month: 'short', day: 'numeric' });
+    const dateLabel = now.toLocaleDateString('en-US', { timeZone: TZ, weekday: 'short', month: 'short', day: 'numeric' });
 
     document.getElementById('date-label').textContent = dateLabel;
     document.getElementById('cat-icon').textContent = quest.icon;
@@ -310,6 +324,12 @@ function buildQuestHtml() {
     document.getElementById('summer-day').textContent = 'Day ' + summerDay + ' of Summer ☀️';
     document.getElementById('quest-text').textContent = quest.quest;
     document.getElementById('quest-detail').textContent = quest.detail;
+
+    const starCount = STARS.total || 0;
+    if (starCount > 0) {
+      document.getElementById('footer').textContent =
+        '⭐ ' + starCount + ' star' + (starCount === 1 ? '' : 's') + ' earned! Keep going! ⭐';
+    }
   </script>
 </body>
 </html>`;
@@ -552,8 +572,10 @@ function buildHtml_C({ heading, dayLabel, breakfast, lunch, updatedAt, reminderB
 
 async function main() {
   if (isSummer()) {
-    fs.writeFileSync('docs/index.html', buildQuestHtml());
-    console.log(`Generated docs/index.html — Summer Quest mode [${pacificDateStr(new Date())}]`);
+    let starsData = { total: 0, log: [] };
+    try { starsData = JSON.parse(fs.readFileSync('docs/stars.json', 'utf8')); } catch {}
+    fs.writeFileSync('docs/index.html', buildQuestHtml(starsData));
+    console.log(`Generated docs/index.html — Summer Quest mode [${pacificDateStr(new Date())}] — ${starsData.total} star(s)`);
     return;
   }
 

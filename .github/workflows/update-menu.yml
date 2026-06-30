@@ -2,9 +2,10 @@ name: Update School Menu
 
 on:
   schedule:
-    # Run at 6 AM, 11 AM, and 2 PM PT on weekdays
-    # UTC offsets: PDT=UTC-7, PST=UTC-8; times below target PDT (summer) hours
-    - cron: '0 13 * * 1-5'   # 6 AM PDT / 5 AM PST
+    # Run at 6 AM PT every day (new quest + star count refreshed in the morning)
+    # UTC offsets: PDT=UTC-7, PST=UTC-8; time below targets PDT (summer) hours
+    - cron: '0 13 * * *'     # 6 AM PDT / 5 AM PST — every day
+    # Weekday-only runs for school-year menu updates
     - cron: '0 18 * * 1-5'   # 11 AM PDT / 10 AM PST
     - cron: '0 21 * * 1-5'   # 2 PM PDT / 1 PM PST — flips to tomorrow's menu for pickup time
   workflow_dispatch: # allow manual trigger
