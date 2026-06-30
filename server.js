@@ -104,20 +104,20 @@ function getQuestDatePT() {
   return ptDateStr;
 }
 
+const SUMMER_START = new Date(2026, 5, 29); // June 29, 2026 — first day of summer quest
+
 function getSummerDay() {
   const dateStr = getQuestDatePT();
   const [y, m, d] = dateStr.split('-').map(Number);
-  const summerStart = new Date(y, 5, 21); // June 21
-  const diff = new Date(y, m - 1, d) - summerStart;
-  const day = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
-  return Math.max(day, 1);
+  const diff = new Date(y, m - 1, d) - SUMMER_START;
+  return Math.max(1, Math.floor(diff / (1000 * 60 * 60 * 24)) + 1);
 }
 
 function getDailyQuest() {
   const dateStr = getQuestDatePT();
   const [y, m, d] = dateStr.split('-').map(Number);
-  const dayOfYear = Math.floor((new Date(y, m - 1, d) - new Date(y, 0, 1)) / (1000 * 60 * 60 * 24));
-  return QUESTS[dayOfYear % QUESTS.length];
+  const daysSinceSummerStart = Math.max(0, Math.floor((new Date(y, m - 1, d) - SUMMER_START) / (1000 * 60 * 60 * 24)));
+  return QUESTS[daysSinceSummerStart % QUESTS.length];
 }
 
 function buildQuestMarkupFull(quest, dateLabel, summerDay) {

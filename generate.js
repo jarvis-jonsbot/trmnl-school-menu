@@ -310,11 +310,11 @@ function buildQuestHtml(starsData = { total: 0, log: [] }) {
     }
 
     const [y, m, d] = dateStr.split('-').map(Number);
-    const dayOfYear = Math.floor((new Date(y, m - 1, d) - new Date(y, 0, 1)) / 86400000);
-    const quest = QUESTS[dayOfYear % QUESTS.length];
-
-    const summerStart = new Date(2026, 5, 29); // Challenge started June 29, 2026
-    const summerDay = Math.max(1, Math.floor((new Date(y, m - 1, d) - summerStart) / 86400000) + 1);
+    const summerStart = new Date(2026, 5, 29); // June 29, 2026 — first day of summer quest
+    const today = new Date(y, m - 1, d);
+    const daysSinceSummerStart = Math.max(0, Math.floor((today - summerStart) / 86400000));
+    const quest = QUESTS[daysSinceSummerStart % QUESTS.length];
+    const summerDay = daysSinceSummerStart + 1;
 
     const dateLabel = now.toLocaleDateString('en-US', { timeZone: TZ, weekday: 'short', month: 'short', day: 'numeric' });
 
