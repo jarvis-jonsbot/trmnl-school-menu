@@ -106,6 +106,18 @@ function getQuestDatePT() {
 
 const SUMMER_START = new Date(2026, 5, 29); // June 29, 2026 — first day of summer quest
 
+// Seeded shuffle (LCG, seed=2026) — INDEX[0]=39 ("Decorate a cookie"), INDEX[1]=1 ("Make a bookmark")
+// guarantees every quest appears exactly once with no category runs
+const QUEST_INDEX = [
+  39,  1, 35, 30, 42,  5, 19, 47, 22, 21,
+  52, 57, 64, 25, 28, 20, 54, 36, 34, 56,
+  18, 46, 27, 23, 26, 51, 11, 62, 50,  8,
+  37,  7, 44,  0,  4, 60, 49, 69, 12, 63,
+  32,  9, 29, 58, 17, 38, 24, 14, 41, 55,
+  13, 16,  6, 53, 66, 33, 15, 65, 61, 67,
+  59, 10, 48, 40, 31, 43, 45, 68,  3,  2,
+];
+
 function getSummerDay() {
   const dateStr = getQuestDatePT();
   const [y, m, d] = dateStr.split('-').map(Number);
@@ -117,7 +129,7 @@ function getDailyQuest() {
   const dateStr = getQuestDatePT();
   const [y, m, d] = dateStr.split('-').map(Number);
   const daysSinceSummerStart = Math.max(0, Math.floor((new Date(y, m - 1, d) - SUMMER_START) / (1000 * 60 * 60 * 24)));
-  return QUESTS[daysSinceSummerStart % QUESTS.length];
+  return QUESTS[QUEST_INDEX[daysSinceSummerStart % QUEST_INDEX.length]];
 }
 
 function buildQuestMarkupFull(quest, dateLabel, summerDay) {
