@@ -1,4 +1,11 @@
 {
-  "total": 0,
-  "log": []
+  "total": 1,
+  "log": [
+    {
+      "date": "2026-06-29",
+      "quest": "Decorate a cookie",
+      "category": "Kitchen Magic",
+      "icon": "🍳"
+    }
+  ]
 }
