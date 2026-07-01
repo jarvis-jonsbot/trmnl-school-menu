@@ -1,11 +1,17 @@
 {
-  "total": 1,
+  "total": 2,
   "log": [
     {
       "date": "2026-06-29",
       "quest": "Decorate a cookie",
       "category": "Kitchen Magic",
       "icon": "🍳"
+    },
+    {
+      "date": "2026-06-30",
+      "quest": "Write a love note",
+      "category": "Kindness Mission",
+      "icon": "🌟"
     }
   ]
 }
