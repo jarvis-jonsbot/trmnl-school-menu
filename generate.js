@@ -297,11 +297,11 @@ function buildQuestHtml(starsData = { total: 0, log: [] }) {
     const TZ = 'America/Los_Angeles';
     const now = new Date();
 
-    // New day starts at 6 AM PT, not midnight
+    // New day starts at 1 AM PT, not midnight
     const ptDateStr = now.toLocaleDateString('en-CA', { timeZone: TZ });
     const ptHour = parseInt(now.toLocaleString('en-US', { timeZone: TZ, hour: 'numeric', hour12: false }), 10);
     let dateStr;
-    if (ptHour < 6) {
+    if (ptHour < 1) {
       const [py, pm, pd] = ptDateStr.split('-').map(Number);
       const prev = new Date(py, pm - 1, pd - 1);
       dateStr = prev.toLocaleDateString('en-CA', { timeZone: TZ });

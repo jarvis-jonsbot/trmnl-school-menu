@@ -2,9 +2,10 @@ name: Update School Menu
 
 on:
   schedule:
-    # Run at 6 AM PT every day (new quest + star count refreshed in the morning)
+    # Run at 1 AM PT every day (new quest + star count refreshed right after rollover,
+    # well before TRMNL's first poll of the day, which happens every 2 hours)
     # UTC offsets: PDT=UTC-7, PST=UTC-8; time below targets PDT (summer) hours
-    - cron: '0 13 * * *'     # 6 AM PDT / 5 AM PST — every day
+    - cron: '0 8 * * *'      # 1 AM PDT / midnight PST — every day
     # Weekday-only runs for school-year menu updates
     - cron: '0 18 * * 1-5'   # 11 AM PDT / 10 AM PST
     - cron: '0 21 * * 1-5'   # 2 PM PDT / 1 PM PST — flips to tomorrow's menu for pickup time
