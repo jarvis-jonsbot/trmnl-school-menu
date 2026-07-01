@@ -90,13 +90,13 @@ const QUESTS = [
   { category: 'Fun & Games', icon: '🎮', quest: 'Put on a puppet show', detail: 'Make the puppets from socks. 3-minute performance!' },
 ];
 
-// Returns the effective quest date in PT: before 6 AM uses yesterday's date
+// Returns the effective quest date in PT: before 1 AM uses yesterday's date
 function getQuestDatePT() {
   const now = new Date();
   const TZ = 'America/Los_Angeles';
   const ptDateStr = now.toLocaleDateString('en-CA', { timeZone: TZ });
   const ptHour = parseInt(now.toLocaleString('en-US', { timeZone: TZ, hour: 'numeric', hour12: false }), 10);
-  if (ptHour < 6) {
+  if (ptHour < 1) {
     const [y, m, d] = ptDateStr.split('-').map(Number);
     const prev = new Date(y, m - 1, d - 1);
     return prev.toLocaleDateString('en-CA', { timeZone: TZ });
