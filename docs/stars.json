@@ -1,5 +1,5 @@
 {
-  "total": 3,
+  "total": 4,
   "log": [
     {
       "date": "2026-06-29",
@@ -16,6 +16,12 @@
     {
       "date": "2026-07-01",
       "quest": "Do a surprise chore",
+      "category": "Kindness Mission",
+      "icon": "🌟"
+    },
+    {
+      "date": "2026-07-02",
+      "quest": "Give Kátur extra love",
       "category": "Kindness Mission",
       "icon": "🌟"
     }
