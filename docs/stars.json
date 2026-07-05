@@ -1,5 +1,5 @@
 {
-  "total": 5,
+  "total": 6,
   "log": [
     {
       "date": "2026-06-29",
@@ -28,6 +28,12 @@
     {
       "date": "2026-07-03",
       "quest": "Say 3 nice things",
+      "category": "Kindness Mission",
+      "icon": "🌟"
+    },
+    {
+      "date": "2026-07-05",
+      "quest": "Share your favorite snack",
       "category": "Kindness Mission",
       "icon": "🌟"
     }
