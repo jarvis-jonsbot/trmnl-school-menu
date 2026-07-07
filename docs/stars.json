@@ -1,5 +1,5 @@
 {
-  "total": 7,
+  "total": 8,
   "log": [
     {
       "date": "2026-06-29",
@@ -40,6 +40,12 @@
     {
       "date": "2026-07-06",
       "quest": "Make a card for a grandparent",
+      "category": "Kindness Mission",
+      "icon": "🌟"
+    },
+    {
+      "date": "2026-07-04",
+      "quest": "Draw art for a faraway person",
       "category": "Kindness Mission",
       "icon": "🌟"
     }
