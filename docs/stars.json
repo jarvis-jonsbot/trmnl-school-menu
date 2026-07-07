@@ -1,5 +1,5 @@
 {
-  "total": 8,
+  "total": 9,
   "log": [
     {
       "date": "2026-06-29",
@@ -46,6 +46,12 @@
     {
       "date": "2026-07-04",
       "quest": "Draw art for a faraway person",
+      "category": "Kindness Mission",
+      "icon": "🌟"
+    },
+    {
+      "date": "2026-07-07",
+      "quest": "Say thank you creatively",
       "category": "Kindness Mission",
       "icon": "🌟"
     }
