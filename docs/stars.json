@@ -1,5 +1,5 @@
 {
-  "total": 10,
+  "total": 11,
   "log": [
     {
       "date": "2026-06-29",
@@ -60,6 +60,12 @@
       "quest": "Help without being asked",
       "category": "Kindness Mission",
       "icon": "🌟"
+    },
+    {
+      "date": "2026-07-12",
+      "quest": "Test paper airplanes",
+      "category": "Science & Discovery",
+      "icon": "🔬"
     }
   ]
 }
