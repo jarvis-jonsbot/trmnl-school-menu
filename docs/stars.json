@@ -1,5 +1,5 @@
 {
-  "total": 11,
+  "total": 12,
   "log": [
     {
       "date": "2026-06-29",
@@ -64,6 +64,12 @@
     {
       "date": "2026-07-12",
       "quest": "Test paper airplanes",
+      "category": "Science & Discovery",
+      "icon": "🔬"
+    },
+    {
+      "date": "2026-07-13",
+      "quest": "Make oobleck",
       "category": "Science & Discovery",
       "icon": "🔬"
     }
