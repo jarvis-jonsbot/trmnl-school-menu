@@ -1,5 +1,5 @@
 {
-  "total": 12,
+  "total": 13,
   "log": [
     {
       "date": "2026-06-29",
@@ -70,6 +70,12 @@
     {
       "date": "2026-07-13",
       "quest": "Make oobleck",
+      "category": "Science & Discovery",
+      "icon": "🔬"
+    },
+    {
+      "date": "2026-07-14",
+      "quest": "Magnet hunt",
       "category": "Science & Discovery",
       "icon": "🔬"
     }
