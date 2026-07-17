@@ -1,5 +1,5 @@
 {
-  "total": 14,
+  "total": 15,
   "log": [
     {
       "date": "2026-06-29",
@@ -82,6 +82,12 @@
     {
       "date": "2026-07-15",
       "quest": "Grow a sprout",
+      "category": "Science & Discovery",
+      "icon": "🔬"
+    },
+    {
+      "date": "2026-07-16",
+      "quest": "Trace your shadow",
       "category": "Science & Discovery",
       "icon": "🔬"
     }
