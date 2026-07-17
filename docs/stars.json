@@ -1,5 +1,5 @@
 {
-  "total": 15,
+  "total": 18,
   "log": [
     {
       "date": "2026-06-29",
@@ -9,87 +9,105 @@
     },
     {
       "date": "2026-06-30",
-      "quest": "Write a love note",
-      "category": "Kindness Mission",
-      "icon": "🌟"
+      "quest": "Make a bookmark",
+      "category": "Art & Craft",
+      "icon": "🎨"
     },
     {
       "date": "2026-07-01",
-      "quest": "Do a surprise chore",
-      "category": "Kindness Mission",
-      "icon": "🌟"
+      "quest": "Build a snack tower",
+      "category": "Kitchen Magic",
+      "icon": "🍳"
     },
     {
       "date": "2026-07-02",
+      "quest": "Make a fruit salad",
+      "category": "Kitchen Magic",
+      "icon": "🍳"
+    },
+    {
+      "date": "2026-07-03",
       "quest": "Give Kátur extra love",
       "category": "Kindness Mission",
       "icon": "🌟"
     },
     {
-      "date": "2026-07-03",
-      "quest": "Say 3 nice things",
-      "category": "Kindness Mission",
-      "icon": "🌟"
+      "date": "2026-07-04",
+      "quest": "Create a comic strip",
+      "category": "Art & Craft",
+      "icon": "🎨"
     },
     {
       "date": "2026-07-05",
-      "quest": "Share your favorite snack",
-      "category": "Kindness Mission",
-      "icon": "🌟"
+      "quest": "Walk Kátur an extra block",
+      "category": "Outdoor Adventure",
+      "icon": "🌿"
     },
     {
       "date": "2026-07-06",
-      "quest": "Make a card for a grandparent",
-      "category": "Kindness Mission",
-      "icon": "🌟"
-    },
-    {
-      "date": "2026-07-04",
-      "quest": "Draw art for a faraway person",
-      "category": "Kindness Mission",
-      "icon": "🌟"
-    },
-    {
-      "date": "2026-07-07",
       "quest": "Say thank you creatively",
       "category": "Kindness Mission",
       "icon": "🌟"
     },
     {
-      "date": "2026-07-08",
-      "quest": "Help without being asked",
-      "category": "Kindness Mission",
-      "icon": "🌟"
+      "date": "2026-07-07",
+      "quest": "Write a summer poem",
+      "category": "Learning & Brain",
+      "icon": "📚"
     },
     {
-      "date": "2026-07-12",
+      "date": "2026-07-08",
+      "quest": "Read for 20 minutes",
+      "category": "Learning & Brain",
+      "icon": "📚"
+    },
+    {
+      "date": "2026-07-09",
       "quest": "Test paper airplanes",
       "category": "Science & Discovery",
       "icon": "🔬"
     },
     {
-      "date": "2026-07-13",
-      "quest": "Make oobleck",
+      "date": "2026-07-10",
+      "quest": "Tiny world expedition",
       "category": "Science & Discovery",
       "icon": "🔬"
     },
     {
+      "date": "2026-07-11",
+      "quest": "Build a blanket fort",
+      "category": "Fun & Games",
+      "icon": "🎮"
+    },
+    {
+      "date": "2026-07-12",
+      "quest": "Learn 3 planet names",
+      "category": "Learning & Brain",
+      "icon": "📚"
+    },
+    {
+      "date": "2026-07-13",
+      "quest": "Draw a butterfly life cycle",
+      "category": "Learning & Brain",
+      "icon": "📚"
+    },
+    {
       "date": "2026-07-14",
+      "quest": "Learn a word in a new language",
+      "category": "Learning & Brain",
+      "icon": "📚"
+    },
+    {
+      "date": "2026-07-15",
       "quest": "Magnet hunt",
       "category": "Science & Discovery",
       "icon": "🔬"
     },
     {
-      "date": "2026-07-15",
-      "quest": "Grow a sprout",
-      "category": "Science & Discovery",
-      "icon": "🔬"
-    },
-    {
       "date": "2026-07-16",
-      "quest": "Trace your shadow",
-      "category": "Science & Discovery",
-      "icon": "🔬"
+      "quest": "Make ants on a log",
+      "category": "Kitchen Magic",
+      "icon": "🍳"
     }
   ]
 }
