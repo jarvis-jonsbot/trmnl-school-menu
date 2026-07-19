@@ -1,5 +1,5 @@
 {
-  "total": 18,
+  "total": 19,
   "log": [
     {
       "date": "2026-06-29",
@@ -108,6 +108,12 @@
       "quest": "Make ants on a log",
       "category": "Kitchen Magic",
       "icon": "🍳"
+    },
+    {
+      "date": "2026-07-19",
+      "quest": "Color-drinking flower",
+      "category": "Science & Discovery",
+      "icon": "🔬"
     }
   ]
 }
