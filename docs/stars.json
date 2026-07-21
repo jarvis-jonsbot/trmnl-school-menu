@@ -1,5 +1,5 @@
 {
-  "total": 19,
+  "total": 20,
   "log": [
     {
       "date": "2026-06-29",
@@ -114,6 +114,12 @@
       "quest": "Color-drinking flower",
       "category": "Science & Discovery",
       "icon": "🔬"
+    },
+    {
+      "date": "2026-07-21",
+      "quest": "Build the tallest tower",
+      "category": "Fun & Games",
+      "icon": "🎮"
     }
   ]
 }
