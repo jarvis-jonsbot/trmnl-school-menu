@@ -1,5 +1,5 @@
 {
-  "total": 20,
+  "total": 21,
   "log": [
     {
       "date": "2026-06-29",
@@ -118,6 +118,12 @@
     {
       "date": "2026-07-21",
       "quest": "Build the tallest tower",
+      "category": "Fun & Games",
+      "icon": "🎮"
+    },
+    {
+      "date": "2026-07-22",
+      "quest": "Make up a dance",
       "category": "Fun & Games",
       "icon": "🎮"
     }
