@@ -1,5 +1,5 @@
 {
-  "total": 21,
+  "total": 24,
   "log": [
     {
       "date": "2026-06-29",
@@ -110,6 +110,18 @@
       "icon": "🍳"
     },
     {
+      "date": "2026-07-17",
+      "quest": "Make a smoothie",
+      "category": "Kitchen Magic",
+      "icon": "🍳"
+    },
+    {
+      "date": "2026-07-18",
+      "quest": "Trace your shadow",
+      "category": "Science & Discovery",
+      "icon": "🔬"
+    },
+    {
       "date": "2026-07-19",
       "quest": "Color-drinking flower",
       "category": "Science & Discovery",
@@ -126,6 +138,12 @@
       "quest": "Make up a dance",
       "category": "Fun & Games",
       "icon": "🎮"
+    },
+    {
+      "date": "2026-07-24",
+      "quest": "Volcano time!",
+      "category": "Science & Discovery",
+      "icon": "🔬"
     }
   ]
 }
