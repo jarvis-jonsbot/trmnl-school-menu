@@ -1,5 +1,5 @@
 {
-  "total": 24,
+  "total": 25,
   "log": [
     {
       "date": "2026-06-29",
@@ -144,6 +144,12 @@
       "quest": "Volcano time!",
       "category": "Science & Discovery",
       "icon": "🔬"
+    },
+    {
+      "date": "2026-07-27",
+      "quest": "Backyard obstacle course",
+      "category": "Fun & Games",
+      "icon": "🎮"
     }
   ]
 }
