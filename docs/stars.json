@@ -1,5 +1,5 @@
 {
-  "total": 26,
+  "total": 27,
   "log": [
     {
       "date": "2026-06-29",
@@ -154,6 +154,12 @@
     {
       "date": "2026-07-26",
       "quest": "Learn a magic trick",
+      "category": "Fun & Games",
+      "icon": "🎮"
+    },
+    {
+      "date": "2026-07-28",
+      "quest": "Play a board game",
       "category": "Fun & Games",
       "icon": "🎮"
     }
