@@ -1,5 +1,5 @@
 {
-  "total": 27,
+  "total": 28,
   "log": [
     {
       "date": "2026-06-29",
@@ -162,6 +162,12 @@
       "quest": "Play a board game",
       "category": "Fun & Games",
       "icon": "🎮"
+    },
+    {
+      "date": "2026-08-10",
+      "quest": "Collect 5 leaves",
+      "category": "Outdoor Adventure",
+      "icon": "🌿"
     }
   ]
 }
