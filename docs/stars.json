@@ -1,5 +1,5 @@
 {
-  "total": 28,
+  "total": 40,
   "log": [
     {
       "date": "2026-06-29",
@@ -128,6 +128,12 @@
       "icon": "🔬"
     },
     {
+      "date": "2026-07-20",
+      "quest": "Make a mud pie",
+      "category": "Outdoor Adventure",
+      "icon": "🌿"
+    },
+    {
       "date": "2026-07-21",
       "quest": "Build the tallest tower",
       "category": "Fun & Games",
@@ -146,22 +152,88 @@
       "icon": "🔬"
     },
     {
-      "date": "2026-07-27",
-      "quest": "Backyard obstacle course",
-      "category": "Fun & Games",
-      "icon": "🎮"
-    },
-    {
       "date": "2026-07-26",
       "quest": "Learn a magic trick",
       "category": "Fun & Games",
       "icon": "🎮"
     },
     {
+      "date": "2026-07-27",
+      "quest": "Backyard obstacle course",
+      "category": "Fun & Games",
+      "icon": "🎮"
+    },
+    {
+      "date": "2026-07-27",
+      "quest": "Make a rainbow",
+      "category": "Science & Discovery",
+      "icon": "🔬"
+    },
+    {
       "date": "2026-07-28",
       "quest": "Play a board game",
       "category": "Fun & Games",
       "icon": "🎮"
+    },
+    {
+      "date": "2026-07-28",
+      "quest": "Make paper animals",
+      "category": "Art & Craft",
+      "icon": "🎨"
+    },
+    {
+      "date": "2026-07-31",
+      "quest": "Draw art for a faraway person",
+      "category": "Kindness Mission",
+      "icon": "🌟"
+    },
+    {
+      "date": "2026-08-01",
+      "quest": "Draw a dragon",
+      "category": "Art & Craft",
+      "icon": "🎨"
+    },
+    {
+      "date": "2026-08-02",
+      "quest": "Make a paper crown",
+      "category": "Art & Craft",
+      "icon": "🎨"
+    },
+    {
+      "date": "2026-08-03",
+      "quest": "Invent a new game",
+      "category": "Fun & Games",
+      "icon": "🎮"
+    },
+    {
+      "date": "2026-08-04",
+      "quest": "Compliment a stranger",
+      "category": "Kindness Mission",
+      "icon": "🌟"
+    },
+    {
+      "date": "2026-08-05",
+      "quest": "Put on a puppet show",
+      "category": "Fun & Games",
+      "icon": "🎮"
+    },
+    {
+      "date": "2026-08-06",
+      "quest": "Cloud watch for 5 minutes",
+      "category": "Outdoor Adventure",
+      "icon": "🌿"
+    },
+    {
+      "date": "2026-08-07",
+      "quest": "I Spy challenge",
+      "category": "Fun & Games",
+      "icon": "🎮"
+    },
+    {
+      "date": "2026-08-08",
+      "quest": "Invent a sandwich",
+      "category": "Kitchen Magic",
+      "icon": "🍳"
     },
     {
       "date": "2026-08-10",
