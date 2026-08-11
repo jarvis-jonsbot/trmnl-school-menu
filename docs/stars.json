@@ -1,5 +1,5 @@
 {
-  "total": 40,
+  "total": 41,
   "log": [
     {
       "date": "2026-06-29",
@@ -238,6 +238,12 @@
     {
       "date": "2026-08-10",
       "quest": "Collect 5 leaves",
+      "category": "Outdoor Adventure",
+      "icon": "🌿"
+    },
+    {
+      "date": "2026-08-11",
+      "quest": "Cloud watch for 5 minutes",
       "category": "Outdoor Adventure",
       "icon": "🌿"
     }
