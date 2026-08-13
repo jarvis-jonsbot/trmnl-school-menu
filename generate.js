@@ -146,6 +146,16 @@ function isSummer() {
   return (m === 6 && d >= 21) || m === 7 || m === 8;
 }
 
+/** True if we're in the extended Summer Quest period: June 21 – Labor Day 2026 (Sep 7) */
+function isExtendedSummerPeriod() {
+  const [y, m, d] = pacificDateStr(new Date()).split('-').map(Number);
+  if (y !== 2026) return false;
+  if (m < 6 || m > 9) return false;
+  if (m === 6 && d < 21) return false;
+  if (m === 9 && d > 7) return false;
+  return true;
+}
+
 const QUESTS = [
   // 🎨 Art & Craft
   { category: 'Art & Craft', icon: '🎨', quest: 'Draw a dragon', detail: 'Make it fierce — add treasure for it to guard!' },
@@ -226,6 +236,25 @@ const QUESTS = [
   { category: 'Fun & Games', icon: '🎮', quest: 'Put on a puppet show', detail: 'Make the puppets from socks. 3-minute performance!' },
 ];
 
+const QUEST_INDEX = [
+  39,  1, 35, 30, 42,  5, 19, 47, 22, 21,
+  52, 57, 64, 25, 28, 20, 54, 36, 34, 56,
+  18, 46, 27, 23, 26, 51, 11, 62, 50,  8,
+  37,  7, 44,  0,  4, 60, 49, 69, 12, 63,
+  32,  9, 29, 58, 17, 38, 24, 14, 41, 55,
+  13, 16,  6, 53, 66, 33, 15, 65, 61, 67,
+  59, 10, 48, 40, 31, 43, 45, 68,  3,  2,
+];
+
+function getQuestForDate(dateStr) {
+  const summerStart = new Date(2026, 5, 29); // June 29, 2026 — first day of quest
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const today = new Date(y, m - 1, d);
+  const daysSinceSummerStart = Math.max(0, Math.floor((today - summerStart) / 86400000));
+  const quest = QUESTS[QUEST_INDEX[daysSinceSummerStart % QUEST_INDEX.length]];
+  return { quest, summerDay: daysSinceSummerStart + 1 };
+}
+
 function buildQuestHtml(starsData = { total: 0, log: [] }) {
   const questsJson = JSON.stringify(QUESTS);
   const starsJson = JSON.stringify(starsData);
@@ -292,6 +321,7 @@ function buildQuestHtml(starsData = { total: 0, log: [] }) {
   <div id="footer" class="footer">⭐ Complete your quest and earn a star! ⭐</div>
   <script>
     const QUESTS = ${questsJson};
+    const QUEST_INDEX = ${JSON.stringify(QUEST_INDEX)};
     const STARS = ${starsJson};
 
     const TZ = 'America/Los_Angeles';
@@ -311,15 +341,6 @@ function buildQuestHtml(starsData = { total: 0, log: [] }) {
 
     const [y, m, d] = dateStr.split('-').map(Number);
     const summerStart = new Date(2026, 5, 29); // June 29, 2026 — first day of summer quest
-    const QUEST_INDEX = [
-      39,  1, 35, 30, 42,  5, 19, 47, 22, 21,
-      52, 57, 64, 25, 28, 20, 54, 36, 34, 56,
-      18, 46, 27, 23, 26, 51, 11, 62, 50,  8,
-      37,  7, 44,  0,  4, 60, 49, 69, 12, 63,
-      32,  9, 29, 58, 17, 38, 24, 14, 41, 55,
-      13, 16,  6, 53, 66, 33, 15, 65, 61, 67,
-      59, 10, 48, 40, 31, 43, 45, 68,  3,  2,
-    ];
     const today = new Date(y, m - 1, d);
     const daysSinceSummerStart = Math.max(0, Math.floor((today - summerStart) / 86400000));
     const quest = QUESTS[QUEST_INDEX[daysSinceSummerStart % QUEST_INDEX.length]];
@@ -340,6 +361,126 @@ function buildQuestHtml(starsData = { total: 0, log: [] }) {
         '⭐ ' + starCount + ' star' + (starCount === 1 ? '' : 's') + ' earned! Keep going! ⭐';
     }
   </script>
+</body>
+</html>`;
+}
+
+// ─── Combined: Summer Quest + School Menu ─────────────────────────────────────
+
+function buildCombinedHtml({ quest, summerDay, dateLabel, starsData, breakfast, lunch, menuHeading, updatedAt }) {
+  const starCount = starsData?.total || 0;
+  const starFooter = starCount > 0
+    ? `⭐ ${starCount} star${starCount === 1 ? '' : 's'} earned! Keep going! ⭐`
+    : '⭐ Complete your quest and earn a star! ⭐';
+
+  function renderMenuSection(emoji, label, menu) {
+    if (!menu || menu.noEntry || menu.categories.length === 0) {
+      return `<div class="menu-section"><div class="menu-label">${emoji} ${label}</div><div class="menu-no-data">No menu posted yet</div></div>`;
+    }
+    if (menu.noSchool) {
+      return `<div class="menu-section"><div class="menu-label">${emoji} ${label}</div><div class="menu-no-data">${menu.noSchoolReason || 'No school today'}</div></div>`;
+    }
+    const cats = menu.categories.map(cat =>
+      `<div class="menu-cat"><span class="menu-cat-name">${cat.name}</span><span class="menu-cat-items">${cat.items.join(' · ')}</span></div>`
+    ).join('');
+    return `<div class="menu-section"><div class="menu-label">${emoji} ${label}</div>${cats}</div>`;
+  }
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=800">
+  <title>Aurora's Quest + Roy Cloud Menu</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 800px; height: 480px;
+      background: #fff; color: #000;
+      font-family: 'Courier New', Courier, monospace;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .top-bar {
+      background: #000; color: #fff;
+      padding: 9px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 14px; font-weight: bold; letter-spacing: 0.1em; text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .body { flex: 1; display: flex; overflow: hidden; }
+    .quest-panel {
+      width: 370px; flex-shrink: 0;
+      border-right: 3px solid #000;
+      display: flex; flex-direction: column;
+      padding: 12px 18px 10px; gap: 10px;
+    }
+    .quest-cat {
+      font-size: 11px; font-weight: bold; letter-spacing: 0.2em; text-transform: uppercase;
+      border-bottom: 1px solid #000; padding-bottom: 6px;
+      display: flex; justify-content: space-between; align-items: baseline;
+    }
+    .quest-day { font-weight: normal; font-size: 11px; letter-spacing: 0.05em; }
+    .quest-text {
+      font-size: 30px; font-weight: bold; line-height: 1.2;
+      flex: 1; display: flex; align-items: center;
+    }
+    .quest-detail {
+      font-size: 12px; color: #333; line-height: 1.5;
+      border-top: 1px dashed #000; padding-top: 8px;
+    }
+    .menu-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .menu-heading {
+      font-size: 11px; font-weight: bold; letter-spacing: 0.15em; text-transform: uppercase;
+      background: #000; color: #fff; padding: 5px 16px; flex-shrink: 0;
+    }
+    .menu-body {
+      flex: 1; display: flex; flex-direction: column;
+      padding: 8px 16px; gap: 4px; justify-content: space-evenly;
+    }
+    .menu-section { display: flex; flex-direction: column; gap: 3px; }
+    .menu-label { font-size: 11px; font-weight: bold; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 3px; }
+    .menu-cat { display: flex; font-size: 12px; line-height: 1.4; gap: 6px; }
+    .menu-cat-name { font-weight: bold; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; min-width: 60px; flex-shrink: 0; padding-top: 1px; }
+    .menu-cat-items { flex: 1; }
+    .menu-no-data { font-size: 12px; font-style: italic; color: #555; }
+    .menu-divider { border: none; border-top: 1px solid #000; flex-shrink: 0; }
+    .footer {
+      border-top: 2px solid #000; padding: 7px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 11px; font-weight: bold; letter-spacing: 0.08em; text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .footer-right { font-weight: normal; font-size: 10px; letter-spacing: 0.05em; }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <span>✨ Aurora's Summer Quest ✨</span>
+    <span>${dateLabel}</span>
+  </div>
+  <div class="body">
+    <div class="quest-panel">
+      <div class="quest-cat">
+        <span>${quest.icon} ${quest.category}</span>
+        <span class="quest-day">Day ${summerDay} ☀️</span>
+      </div>
+      <div class="quest-text">${quest.quest}</div>
+      <div class="quest-detail">${quest.detail}</div>
+    </div>
+    <div class="menu-panel">
+      <div class="menu-heading">Roy Cloud · ${menuHeading}</div>
+      <div class="menu-body">
+        ${renderMenuSection('🍳', 'Breakfast', breakfast)}
+        <hr class="menu-divider">
+        ${renderMenuSection('🍽️', 'Lunch', lunch)}
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <span>${starFooter}</span>
+    <span class="footer-right">Updated ${updatedAt} PT · menu.ulfhedinn.net</span>
+  </div>
 </body>
 </html>`;
 }
@@ -580,11 +721,39 @@ function buildHtml_C({ heading, dayLabel, breakfast, lunch, updatedAt, reminderB
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
-  if (isSummer()) {
+  if (isExtendedSummerPeriod()) {
     let starsData = { total: 0, log: [] };
     try { starsData = JSON.parse(fs.readFileSync('docs/stars.json', 'utf8')); } catch {}
-    fs.writeFileSync('docs/index.html', buildQuestHtml(starsData));
-    console.log(`Generated docs/index.html — Summer Quest mode [${pacificDateStr(new Date())}] — ${starsData.total} star(s)`);
+
+    // Compute which quest is today (1 AM PT rollover)
+    const now = new Date();
+    const ptHour = parseInt(now.toLocaleString('en-US', { timeZone: TZ, hour: 'numeric', hour12: false }));
+    let questDateStr = pacificDateStr(now);
+    if (ptHour < 1) {
+      const [py, pm, pd] = questDateStr.split('-').map(Number);
+      const prev = new Date(py, pm - 1, pd - 1);
+      questDateStr = pacificDateStr(prev);
+    }
+    const { quest, summerDay } = getQuestForDate(questDateStr);
+    const dateLabel = now.toLocaleDateString('en-US', { timeZone: TZ, weekday: 'short', month: 'short', day: 'numeric' });
+    const updatedAt = now.toLocaleTimeString('en-US', { timeZone: TZ, hour: 'numeric', minute: '2-digit' });
+
+    // Try to fetch the school menu (may be empty until school starts)
+    let menuHeading = 'Coming Up';
+    let breakfast = { categories: [], noEntry: true };
+    let lunch = { categories: [], noEntry: true };
+    try {
+      const menuData = await findTargetMenu();
+      menuHeading = menuData.isToday ? 'Today' : menuData.isTomorrow ? 'Tomorrow' : 'Coming Up';
+      breakfast = menuData.breakfast;
+      lunch = menuData.lunch;
+    } catch (e) {
+      console.warn('Menu fetch skipped:', e.message);
+    }
+
+    const html = buildCombinedHtml({ quest, summerDay, dateLabel, starsData, breakfast, lunch, menuHeading, updatedAt });
+    fs.writeFileSync('docs/index.html', html);
+    console.log(`Generated docs/index.html — Combined Quest+Menu [${questDateStr}] — Day ${summerDay} — ${starsData.total} star(s)`);
     return;
   }
 
