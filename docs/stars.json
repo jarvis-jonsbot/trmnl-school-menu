@@ -1,5 +1,5 @@
 {
-  "total": 41,
+  "total": 42,
   "log": [
     {
       "date": "2026-06-29",
@@ -244,6 +244,12 @@
     {
       "date": "2026-08-11",
       "quest": "Cloud watch for 5 minutes",
+      "category": "Outdoor Adventure",
+      "icon": "🌿"
+    },
+    {
+      "date": "2026-08-16",
+      "quest": "Find the biggest rock",
       "category": "Outdoor Adventure",
       "icon": "🌿"
     }
