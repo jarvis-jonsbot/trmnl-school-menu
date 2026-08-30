@@ -1,5 +1,5 @@
 {
-  "total": 42,
+  "total": 43,
   "log": [
     {
       "date": "2026-06-29",
@@ -252,6 +252,12 @@
       "quest": "Find the biggest rock",
       "category": "Outdoor Adventure",
       "icon": "🌿"
+    },
+    {
+      "date": "2026-08-30",
+      "quest": "Help make breakfast",
+      "category": "Kitchen Magic",
+      "icon": "🍳"
     }
   ]
 }
