@@ -1,5 +1,5 @@
 {
-  "total": 43,
+  "total": 44,
   "log": [
     {
       "date": "2026-06-29",
@@ -256,6 +256,12 @@
     {
       "date": "2026-08-30",
       "quest": "Help make breakfast",
+      "category": "Kitchen Magic",
+      "icon": "🍳"
+    },
+    {
+      "date": "2026-09-01",
+      "quest": "Make lemonade",
       "category": "Kitchen Magic",
       "icon": "🍳"
     }
