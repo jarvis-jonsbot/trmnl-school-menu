@@ -67,9 +67,9 @@ function pacificHour(date) {
   return parseInt(date.toLocaleString('en-US', { timeZone: TZ, hour: 'numeric', hour12: false }));
 }
 
-/** Returns true if today is Wednesday in Pacific time */
-function isTodayWednesdayPT() {
-  return new Date().toLocaleDateString('en-US', { timeZone: TZ, weekday: 'long' }) === 'Wednesday';
+/** Returns the day of week in Pacific time */
+function todayDayPT() {
+  return new Date().toLocaleDateString('en-US', { timeZone: TZ, weekday: 'long' });
 }
 
 /**
@@ -766,7 +766,10 @@ async function main() {
   const heading = isToday ? `Today — ${dayLabel}` : isTomorrow ? `Tomorrow — ${dayLabel}` : `Coming up — ${dayLabel}`;
   const updatedAt = new Date().toLocaleTimeString('en-US', { timeZone: TZ, hour: 'numeric', minute: '2-digit' });
 
-  const reminderBanner = isTodayWednesdayPT()
+  const day = todayDayPT();
+  const reminderBanner = day === 'Thursday'
+    ? `<div class="reminder-banner">🛒 Student Store today — bring money!</div>`
+    : day === 'Wednesday'
     ? `<div class="reminder-banner">🛒 Student Store tomorrow — bring money!</div>`
     : '';
 
